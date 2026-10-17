@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body >
+<nav class="navbar">
+    <a href="#umum">Umum</a>
+    <a href="#notifikasi">Notifikasi</a>
+    <a href="#jaringan">Jaringan</a>
+
+
+</nav>
+
+<section id="umum" class="bagian-umum">
+    <h2>Pengaturan Umum</h2>
+    <p>Di sini Anda dapat mengubah pengaturan umum aplikasi.</p>
+    <label for="umum">Atur Parameter robot Ai Anda</label>
+
+
+    <!-- Bagian Identitas Robot-->
+     <div class="setting-row">
+        <div class="setting-info">
+            <label for="namaRobot">Nama Robot</label>
+            <p>Ubah nama robot Anda.</p>
+        </div>
+        <input
+        type="text"
+        id="namaRobot"
+        name="namaRobot"
+        placeholder="Masukkan nama robot">
+    </div>
+
+    <!-- bagian Waktu Pemotretan Camera-->
+        <h2>Waktu Pemotretan Camera</h2>
+        <label for="waktuPemotretan">Pilih Waktu Pemotretan:</label>
+        <select id="waktuPemotretan" name="waktuPemotretan">
+            <option value="3">3 detik</option>
+            <option value="5">5 detik</option>
+            <option value="6">6 detik</option>
+
+        </select>
+
+    <!-- Volume Sabun -->
+    <h2>Volume Sabun</h2>
+    <label for="volumeSabun">Pilih Volume Sabun:</label>
+    <select id="volumeSabun" name="volumeSabun">
+        <option value="Rendah">Rendah</option>
+        <option value="Sedang">Sedang</option>
+        <option value="Tinggi">Tinggi</option>
+    </select>
+</section>
+
+<section id="notifikasi" class="settings-card">
+    <h2>Pengaturan Notifikasi</h2>
+    <p>Atur pemberitahuan yang ingin Anda terima dari SmartMop.</p>
+
+    <!-- Notifikasi website -->
+    <div class="setting-row">
+        <div class="setting-info">
+            <label for="notifWeb">Notifikasi Website</label>
+            <p>Pemberitahuan saat tumpahan terdeteksi.</p>
+        </div>
+
+        <label class="switch">
+            <input type="checkbox" id="notifWeb" checked>
+            <span class="switch-slider"></span>
+        </label>
+    </div>
+
+    <!-- Suara peringatan -->
+    <div class="setting-row">
+        <div class="setting-info">
+            <label for="notifSuara">Suara Peringatan</label>
+            <p>Bunyikan peringatan saat ada deteksi atau kesalahan.</p>
+        </div>
+
+        <label class="switch">
+            <input type="checkbox" id="notifSuara" checked>
+            <span class="switch-slider"></span>
+        </label>
+    </div>
+
+    <!-- Notifikasi browser -->
+    <div class="setting-row">
+        <div class="setting-info">
+            <label for="notifBrowser">Notifikasi Browser</label>
+            <p>Tampilkan pemberitahuan dari browser.</p>
+        </div>
+
+        <label class="switch">
+            <input type="checkbox" id="notifBrowser">
+            <span class="switch-slider"></span>
+        </label>
+    </div>
+
+    <!-- Notifikasi pembersihan -->
+    <div class="setting-row">
+        <div class="setting-info">
+            <label for="notifSelesai">Pembersihan Selesai</label>
+            <p>Beri tahu ketika robot selesai mengepel.</p>
+        </div>
+
+        <label class="switch">
+            <input type="checkbox" id="notifSelesai" checked>
+            <span class="switch-slider"></span>
+        </label>
+    </div>
+
+    <!-- Notifikasi kesalahan -->
+    <div class="setting-row">
+        <div class="setting-info">
+            <label for="notifError">Peringatan Sistem</label>
+            <p>Informasi ketika server terputus atau terjadi kesalahan.</p>
+        </div>
+
+        <label class="switch">
+            <input type="checkbox" id="notifError" checked>
+            <span class="switch-slider"></span>
+        </label>
+    </div>
+</section>
+
+    </select>
+
+
+
+
+
+
+
+<!-- PENGATURAN JARINGAN -->
+<section id="jaringan" class="settings-card">
+
+    <h2>Pengaturan Jaringan</h2>
+    <p>
+        Kelola koneksi antara dashboard, server Machine Learning,
+        ESP32-CAM, dan pengendali robot SmartMop.
+    </p>
+
+    <!-- Status koneksi -->
+    <div class="network-status">
+        <div class="network-status-header">
+            <div>
+                <h3>Status Koneksi Perangkat</h3>
+                <p>Ringkasan konektivitas sistem SmartMop.</p>
+            </div>
+            <span class="status-badge status-checking">
+                Belum diuji
+            </span>
+        </div>
+
+        <div class="network-device-list">
+
+            <div class="network-device">
+                <div class="device-icon">🌐</div>
+                <div class="device-info">
+                    <strong>Server ML</strong>
+                    <small>Server Python dan API</small>
+                </div>
+                <span class="connection-indicator">
+                    Belum diuji
+                </span>
+            </div>
+
+            <div class="network-device">
+                <div class="device-icon">📷</div>
+                <div class="device-info">
+                    <strong>ESP32-CAM</strong>
+                    <small>Kamera pendeteksi tumpahan</small>
+                </div>
+                <span class="connection-indicator">
+                    Belum diuji
+                </span>
+            </div>
+
+            <div class="network-device">
+                <div class="device-icon">🤖</div>
+                <div class="device-info">
+                    <strong>ESP32 DevKit</strong>
+                    <small>Pengendali motor dan pompa</small>
+                </div>
+                <span class="connection-indicator">
+                    Belum diuji
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Konfigurasi Wi-Fi -->
+    <div class="network-section">
+        <h3>Koneksi Wi-Fi</h3>
+        <p>
+            Informasi jaringan yang digunakan oleh perangkat.
+        </p>
+
+        <div class="form-group">
+            <label for="ssid">
+                Nama Jaringan Wi-Fi (SSID)
+            </label>
+            <input
+                type="text"
+                id="ssid"
+                name="ssid"
+                placeholder="Contoh: SmartMop-WiFi"
+            >
+            <small>
+                Isi untuk dokumentasi konfigurasi atau
+                provisioning Wi-Fi jika fitur tersebut didukung.
+            </small>
+        </div>
+    </div>
+
+    <!-- Konfigurasi server -->
+    <div class="network-section">
+        <h3>Konfigurasi Server</h3>
+        <p>
+            Alamat komputer yang menjalankan model ML dan backend.
+        </p>
+
+        <div class="network-form-grid">
+
+            <div class="form-group">
+                <label for="serverIP">
+                    Alamat IP Server
+                </label>
+                <input
+                    type="text"
+                    id="serverIP"
+                    name="serverIP"
+                    placeholder="Contoh: 192.168.1.10"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="apiPort">
+                    Port API
+                </label>
+                <input
+                    type="number"
+                    id="apiPort"
+                    name="apiPort"
+                    value="5000"
+                    min="1"
+                    max="65535"
+                >
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label for="apiPath">
+                Endpoint API
+            </label>
+            <input
+                type="text"
+                id="apiPath"
+                name="apiPath"
+                value="/api"
+                placeholder="/api"
+            >
+        </div>
+    </div>
+
+    <!-- Alamat perangkat -->
+    <div class="network-section">
+        <h3>Alamat IP Perangkat</h3>
+
+        <div class="form-group">
+            <label for="cameraIP">
+                IP Address ESP32-CAM
+            </label>
+            <input
+                type="text"
+                id="cameraIP"
+                name="cameraIP"
+                placeholder="Contoh: 192.168.1.101"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="controllerIP">
+                IP Address ESP32 DevKit
+            </label>
+            <input
+                type="text"
+                id="controllerIP"
+                name="controllerIP"
+                placeholder="Contoh: 192.168.1.102"
+            >
+        </div>
+
+        <small class="network-note">
+            Alamat IP di atas hanya contoh format.
+            Gunakan alamat aktual dari jaringan perangkatmu.
+        </small>
+    </div>
+
+</section>
+
+<button id="simpanPengaturan" class="tombol-simpan">Simpan Pengaturan</button>
+</body>
+</html>

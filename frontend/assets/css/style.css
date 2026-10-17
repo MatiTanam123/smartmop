@@ -1,0 +1,244 @@
+/* =====================================================
+   SMARTMOP - PENGATURAN (style.css)
+   Disesuaikan dengan markup pengaturan.html milikmu:
+   .navbar, #umum.bagian-umum, .settings-card, .setting-row,
+   .switch, .network-*, .form-group, .tombol-simpan
+   File ini berdiri sendiri (tidak butuh layout/components/index.css)
+   ===================================================== */
+
+/* 1. VARIABEL */
+:root {
+    --primary: #1769e0;
+    --primary-hover: #1056bd;
+    --primary-light: #edf4ff;
+    --navy: #14263f;
+    --background: #f3f6fb;
+    --surface: #ffffff;
+    --surface-light: #f8faff;
+    --text: #1d2939;
+    --text-secondary: #667085;
+    --border: #e1e7f0;
+    --border-strong: #d0d8e5;
+    --success: #12834b;
+    --success-bg: #e1f7eb;
+    --danger: #d92d20;
+    --danger-bg: #fee4e2;
+    --warning: #b54708;
+    --warning-bg: #fff0d5;
+    --shadow: 0 4px 18px rgba(20, 38, 63, 0.055);
+    --radius: 12px;
+    --radius-small: 8px;
+    --transition: 0.2s ease;
+    --lebar: 1000px;
+}
+
+/* 2. DASAR HALAMAN */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+
+body {
+    min-height: 100vh;
+    padding: 24px 24px 56px;
+    font-family: "Plus Jakarta Sans", "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--background);
+}
+input, select, button { font: inherit; color: inherit; }
+button, select, input[type="checkbox"] { cursor: pointer; }
+button:disabled { opacity: 0.55; cursor: not-allowed; }
+:focus-visible { outline: 3px solid #a8c9ff; outline-offset: 2px; }
+
+/* 3. NAVBAR (Umum | Notifikasi | Jaringan) */
+.navbar {
+    position: sticky; top: 12px; z-index: 10;
+    display: flex; flex-wrap: wrap; gap: 6px;
+    width: 100%; max-width: var(--lebar);
+    margin: 0 auto 24px; padding: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+.navbar a {
+    flex: 1 1 0; min-height: 42px; padding: 0 20px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-small);
+    color: var(--text-secondary); font-weight: 600; text-decoration: none;
+    transition: background var(--transition), color var(--transition);
+}
+.navbar a:hover { background: var(--primary-light); color: var(--primary); }
+
+/* 4. KARTU UTAMA (Umum, Notifikasi, Jaringan) */
+#umum, .settings-card {
+    width: 100%; max-width: var(--lebar);
+    margin: 0 auto 24px; padding: 28px 30px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    scroll-margin-top: 88px;
+}
+#umum:target, .settings-card:target { border-color: var(--primary); }
+
+#umum h2, .settings-card h2 { color: var(--navy); font-size: 22px; line-height: 1.4; }
+#umum > p, .settings-card > p { margin-bottom: 22px; color: var(--text-secondary); }
+
+/* 5. FORM DASAR */
+label { display: block; color: var(--navy); font-weight: 600; }
+
+input[type="text"], input[type="number"], select {
+    width: 100%; min-height: 44px; padding: 9px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-small);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+input::placeholder { color: #98a2b3; }
+input:hover, select:hover { border-color: #aebbd0; }
+input:focus, select:focus {
+    outline: none; border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(23, 105, 224, 0.16);
+}
+select {
+    appearance: none; padding-right: 38px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23667085' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+}
+select:disabled { background-color: #f2f4f7; color: #98a2b3; }
+
+/* 6. PENGATURAN UMUM */
+#umum > label[for="umum"] { margin-bottom: 18px; color: var(--text-secondary); font-weight: 500; }
+
+#umum > h2:not(:first-child) {
+    margin-top: 24px; padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-size: 16px;
+}
+#umum > label:not([for="umum"]) { margin: 4px 0 8px; font-size: 13px; }
+#umum > select { max-width: 420px; }
+
+.setting-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 14px 0;
+}
+.setting-info { flex: 1 1 auto; min-width: 0; }
+.setting-info label { font-size: 15px; }
+.setting-info p { color: var(--text-secondary); font-size: 13px; }
+#umum .setting-row { align-items: flex-start; padding-top: 4px; }
+#umum .setting-row > input[type="text"] { flex: 0 1 420px; }
+
+/* 7. NOTIFIKASI (toggle) */
+#notifikasi .setting-row { border-bottom: 1px solid var(--border); }
+#notifikasi .setting-row:last-child { border-bottom: 0; padding-bottom: 0; }
+
+.switch { position: relative; display: inline-block; width: 48px; height: 26px; flex: none; }
+.switch input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; z-index: 1; }
+.switch-slider { position: absolute; inset: 0; border-radius: 99px; background: #cfd6e2; transition: background var(--transition); }
+.switch-slider::before {
+    content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
+    border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    transition: transform var(--transition);
+}
+.switch input:checked + .switch-slider { background: var(--primary); }
+.switch input:checked + .switch-slider::before { transform: translateX(22px); }
+.switch input:focus-visible + .switch-slider { outline: 3px solid #a8c9ff; outline-offset: 2px; }
+
+/* 8. JARINGAN */
+.network-status {
+    margin-bottom: 26px; padding: 18px;
+    background: var(--surface-light);
+    border: 1px solid var(--border); border-radius: var(--radius);
+}
+.network-status-header {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    margin-bottom: 14px;
+}
+.network-status-header h3 { color: var(--navy); font-size: 16px; }
+.network-status-header p { color: var(--text-secondary); font-size: 13px; }
+
+.status-badge {
+    display: inline-flex; align-items: center; min-height: 28px; padding: 4px 12px;
+    border-radius: 20px; font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.status-checking { background: #eef2f7; color: var(--text-secondary); }
+.status-online { background: var(--success-bg); color: var(--success); }
+.status-offline { background: var(--danger-bg); color: var(--danger); }
+
+.network-device-list { display: grid; gap: 10px; }
+.network-device {
+    display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 14px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border); border-radius: 10px;
+    transition: border-color var(--transition);
+}
+.network-device:hover { border-color: var(--border-strong); }
+.device-icon {
+    width: 44px; height: 44px; display: grid; place-items: center;
+    border-radius: 10px; background: var(--primary-light); font-size: 20px;
+}
+.device-info strong { display: block; color: var(--navy); }
+.device-info small { color: var(--text-secondary); }
+
+.connection-indicator {
+    padding: 3px 12px; border-radius: 6px;
+    background: #eef2f7; color: var(--text-secondary); font-size: 13px; font-weight: 600;
+}
+.connection-indicator.online { background: var(--success-bg); color: var(--success); }
+.connection-indicator.offline { background: var(--danger-bg); color: var(--danger); }
+
+.network-section { padding: 22px 0; border-top: 1px solid var(--border); }
+.network-section:last-child { padding-bottom: 0; }
+.network-section > h3 { margin-bottom: 2px; color: var(--navy); font-size: 16px; }
+.network-section > p { margin-bottom: 14px; color: var(--text-secondary); font-size: 13px; }
+
+.network-form-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+
+.form-group { display: grid; align-content: start; gap: 6px; margin-bottom: 16px; }
+.network-form-grid .form-group { margin-bottom: 0; }
+.form-group:last-child { margin-bottom: 0; }
+.form-group > label { font-size: 13px; }
+.form-group small { color: var(--text-secondary); font-size: 12px; }
+.network-form-grid + .form-group { margin-top: 16px; }
+
+.network-note { display: block; margin-top: 12px; color: var(--text-secondary); font-size: 12.5px; }
+
+.network-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.network-message { margin-top: 12px; padding: 10px 14px; border-radius: var(--radius-small); font-weight: 600; }
+.network-message.success { background: var(--success-bg); color: var(--success); }
+.network-message.error { background: var(--danger-bg); color: var(--danger); }
+
+/* 9. TOMBOL */
+.tombol-simpan, #simpanPengaturan {
+    display: block; width: 100%; max-width: var(--lebar);
+    min-height: 48px; margin: 0 auto; padding: 0 24px;
+    border: 0; border-radius: var(--radius-small);
+    background: var(--primary); color: #fff;
+    font-weight: 700; font-size: 15px;
+    box-shadow: 0 6px 16px rgba(23, 105, 224, 0.25);
+    transition: background var(--transition), transform var(--transition);
+}
+.tombol-simpan:hover, #simpanPengaturan:hover { background: var(--primary-hover); }
+.tombol-simpan:active, #simpanPengaturan:active { transform: translateY(1px); }
+
+.tombol-secondary {
+    min-height: 42px; padding: 0 18px;
+    border: 1px solid var(--border-strong); border-radius: var(--radius-small);
+    background: var(--surface); font-weight: 600;
+}
+.tombol-secondary:hover { background: var(--primary-light); color: var(--primary); }
+
+/* 10. RESPONSIVE */
+@media (max-width: 680px) {
+    body { padding: 16px 12px 40px; }
+    #umum, .settings-card { padding: 20px 18px; }
+    #umum .setting-row { flex-direction: column; align-items: stretch; gap: 10px; }
+    #umum .setting-row > input[type="text"] { flex: none; }
+    .network-form-grid { grid-template-columns: 1fr; }
+    .network-device { grid-template-columns: 44px minmax(0, 1fr); }
+    .network-device .connection-indicator { grid-column: 2; justify-self: start; }
+    .network-status-header { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }

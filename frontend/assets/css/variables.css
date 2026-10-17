@@ -1,0 +1,36 @@
+/* =====================================================
+   SMARTMOP - VARIABEL DESAIN (dipakai semua halaman)
+   ===================================================== */
+:root {
+    --primary: #1769e0;
+    --primary-hover: #1056bd;
+    --primary-light: #edf4ff;
+
+    --navy: #14263f;
+    --navy-light: #203b5f;
+
+    --background: #f3f6fb;
+    --surface: #ffffff;
+    --surface-light: #f8faff;
+
+    --text: #1d2939;
+    --text-secondary: #667085;
+
+    --border: #e1e7f0;
+    --border-strong: #d0d8e5;
+
+    --success: #12834b;
+    --success-bg: #e1f7eb;
+    --danger: #d92d20;
+    --danger-bg: #fee4e2;
+    --warning: #b54708;
+    --warning-bg: #fff0d5;
+
+    --shadow: 0 4px 18px rgba(20, 38, 63, 0.055);
+    --radius: 12px;
+    --radius-small: 8px;
+    --transition: 0.2s ease;
+
+    --sidebar-width: 250px;
+    --font: "Plus Jakarta Sans", "Segoe UI", Arial, Helvetica, sans-serif;
+}

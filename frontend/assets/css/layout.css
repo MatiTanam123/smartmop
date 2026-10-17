@@ -1,0 +1,132 @@
+/* =====================================================
+   SMARTMOP - LAYOUT (reset, sidebar, topbar, halaman)
+   ===================================================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+
+body {
+    min-height: 100vh;
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text);
+    background: var(--background);
+}
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid #a8c9ff; outline-offset: 2px; }
+
+.ico {
+    width: 1.25em; height: 1.25em; flex: none;
+    fill: none; stroke: currentColor; stroke-width: 1.8;
+    stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ---------- Kerangka aplikasi ---------- */
+.app {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    min-height: 100vh;
+}
+.main { min-width: 0; }
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+    position: sticky; top: 0;
+    height: 100vh;
+    display: flex; flex-direction: column; gap: 18px;
+    padding: 20px 14px;
+    color: #fff;
+    background: var(--navy);
+    z-index: 30;
+}
+.brand { display: flex; align-items: center; gap: 12px; padding: 4px 8px 12px; }
+.brand-mark {
+    width: 46px; height: 46px; display: grid; place-items: center;
+    border-radius: 12px; background: rgba(255, 255, 255, 0.1);
+}
+.brand-mark .ico { width: 28px; height: 28px; }
+.brand strong { display: block; font-size: 21px; line-height: 1.15; }
+.brand small { font-size: 12px; color: #b8c7de; }
+
+.nav { display: flex; flex-direction: column; gap: 4px; }
+.nav a {
+    display: flex; align-items: center; gap: 14px;
+    padding: 13px 16px;
+    border-radius: 10px;
+    color: #d5e0f1;
+    font-weight: 500; text-decoration: none;
+    transition: background var(--transition), color var(--transition);
+}
+.nav a .ico { width: 22px; height: 22px; }
+.nav a:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.nav a[aria-current="page"] { background: var(--primary); color: #fff; font-weight: 700; }
+
+.scrim { display: none; }
+
+/* ---------- Topbar ---------- */
+.topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+    padding: 22px 28px 6px;
+}
+.topbar-title { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.topbar h1 { font-size: 28px; line-height: 1.2; color: var(--navy); }
+.topbar p { color: var(--text-secondary); }
+.menu-btn {
+    display: none; width: 42px; height: 42px; place-items: center;
+    border: 1px solid var(--border-strong); border-radius: 10px; background: var(--surface);
+}
+.top-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+
+.bell { position: relative; }
+.bell > button {
+    position: relative; width: 44px; height: 44px; display: grid; place-items: center;
+    border: 0; border-radius: 50%; background: transparent; color: var(--primary);
+}
+.bell > button:hover { background: var(--primary-light); }
+.bell > button .ico { width: 28px; height: 28px; }
+.bell-count {
+    position: absolute; top: 2px; right: 2px;
+    min-width: 20px; height: 20px; padding: 0 5px;
+    display: grid; place-items: center;
+    border-radius: 10px; background: var(--danger); color: #fff;
+    font-size: 12px; font-weight: 700;
+}
+.bell-menu {
+    position: absolute; right: 0; top: 52px; z-index: 40;
+    width: 320px; padding: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: 0 12px 32px rgba(20, 38, 63, 0.16);
+}
+.bell-menu li { list-style: none; padding: 10px 12px; border-radius: 8px; }
+.bell-menu li + li { border-top: 1px solid var(--border); }
+.bell-menu strong { display: block; font-size: 13px; }
+.bell-menu small { color: var(--text-secondary); }
+.bell-menu button {
+    width: 100%; margin-top: 6px; padding: 9px; border: 0; border-radius: 8px;
+    background: var(--primary-light); color: var(--primary); font-weight: 600;
+}
+
+.clock { padding-left: 20px; border-left: 1px solid var(--border-strong); line-height: 1.3; }
+.clock small { display: block; color: var(--text-secondary); font-size: 12.5px; }
+.clock strong { font-size: 24px; color: var(--navy); font-variant-numeric: tabular-nums; }
+
+.online { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.online .dot { width: 10px; height: 10px; border-radius: 50%; background: #16a34a; }
+.online.off .dot { background: var(--danger); }
+
+.btn-emergency {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 20px; border: 0; border-radius: 8px;
+    background: var(--danger); color: #fff; font-weight: 700; letter-spacing: 0.02em;
+    box-shadow: 0 6px 16px rgba(217, 45, 32, 0.28);
+    transition: background var(--transition);
+}
+.btn-emergency:hover { background: #b42318; }
+.btn-emergency .ico { width: 22px; height: 22px; padding: 3px; border-radius: 50%; background: #fff; color: var(--danger); stroke-width: 2.6; }
+
+/* ---------- Isi halaman ---------- */
+.page { display: grid; gap: 20px; padding: 16px 28px 40px; }

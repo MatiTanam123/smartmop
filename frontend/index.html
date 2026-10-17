@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMARTMOP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<h3>Selamat Datang di SMARTMOP</h3>
+<p>Ini adalah halaman utama aplikasi SmartMop. Gunakan navigasi di bawah ini untuk mengakses fitur-fitur lainnya.</p>
+<nav class="navbar">
+    <a href="index.html">Beranda</a>
+    <a href="pages/kontrol-robot.html">Kontrol Robot</a>
+    <a href="pages/riwayat.html">Riwayat</a>
+    <a href="pages/status-sistems.html">Status Sistem</a>
+    <a href="pages/pengaturan.html">Pengaturan</a>
+    <a href="pages/tentang.html">Tentang</a>
+</nav>
+
+
+<section class="main-content">
+    <h2>Fitur Utama</h2>
+
+    <p>
+        Di sini Anda dapat mengontrol robot, melihat riwayat
+        aktivitas, memeriksa status sistem, dan mengatur
+        preferensi aplikasi.
+    </p>
+
+    <div class="robot-container">
+
+        <!-- Status Robot -->
+        <div class="menu-robot">
+            <h3>Status Robot</h3>
+            <p id="statusRobot" class="status online">
+                Online
+            </p>
+        </div>
+
+        <!-- Mode Robot -->
+        <div class="menu-robot">
+            <h3>Mode Robot yang Digunakan</h3>
+
+            <select id="modeRobot">
+                <option value="Otomatis">Otomatis</option>
+                <option value="Manual">Manual</option>
+            </select>
+
+            <p id="infoMode">
+                Robot berjalan secara otomatis.
+            </p>
+        </div>
+
+        <!-- Level Sabun -->
+        <div class="menu-robot">
+            <h3>Level Sabun</h3>
+
+            <p id="nilaiSabun">80%</p>
+
+            <div class="progress-container">
+                <div id="progressSabun"
+                     class="progress-bar sabun"
+                     style="width: 80%;">
+                </div>
+            </div>
+
+            <p id="statusSabun">Sabun masih cukup</p>
+        </div>
+
+        <!-- Level Baterai -->
+        <div class="menu-robot">
+            <h3>Level Baterai</h3>
+
+            <p id="nilaiBaterai">80%</p>
+
+            <div class="progress-container">
+                <div id="progressBaterai"
+                     class="progress-bar baterai"
+                     style="width: 80%;">
+                </div>
+            </div>
+
+            <p id="statusBaterai">Baterai cukup</p>
+        </div>
+
+    </div>
+</section>
+
+</body>
