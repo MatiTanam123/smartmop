@@ -130,3 +130,18 @@ a { color: inherit; }
 
 /* ---------- Isi halaman ---------- */
 .page { display: grid; gap: 20px; padding: 16px 28px 40px; }
+.clock {
+    padding-left: 20px;
+    border-left: 1px solid var(--border-strong);   /* garis pemisah di kiri jam */
+    line-height: 1.3;
+}
+.clock small {                                      /* baris tanggal */
+    display: block;
+    color: var(--text-secondary);
+    font-size: 12.5px;
+}
+.clock strong {                                     /* angka jam */
+    font-size: 24px;
+    color: var(--navy);
+    font-variant-numeric: tabular-nums;
+}

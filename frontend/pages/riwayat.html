@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat | SmartMop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+
+<body data-page="riwayat" data-root="../"
+      data-title="Riwayat Deteksi dan Pembersihan"
+      data-sub="Daftar semua aktivitas deteksi dan proses pembersihan">
+<div class="app">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main">
+        <header class="topbar" id="topbar"></header>
+        <main class="page">
+        <section class="card">
+                <form class="filter" id="filterForm" style="display:flex;flex-wrap:wrap;gap:14px;align-items:end;margin-bottom:18px">
+                    <div class="field"><label for="fFrom">Dari tanggal</label><input type="date" id="fFrom"></div>
+                    <div class="field"><label for="fTo">Sampai tanggal</label><input type="date" id="fTo"></div>
+                    <div class="field"><label for="fStatus">Status</label>
+                        <select id="fStatus">
+                            <option value="">Semua status</option>
+                            <option>Dibersihkan</option><option>Gagal</option><option>-</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" type="submit" id="btnFilter"></button>
+                    <button class="btn btn-ghost" type="button" id="btnReset">Atur ulang</button>
+                </form>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Waktu</th>
+                                <th>Gambar</th>
+                                <th>Hasil Deteksi</th>
+                                <th>Confidence</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="histBody"></tbody>
+                    </table>
+                </div>
+                <p id="histCount" style="margin-top:12px;color:var(--text-secondary)"></p>
+                </section>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/notifications.js"></script>
+<script src="../assets/js/history.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Camera | SmartMop</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body data-page="live-camera" data-root="../"
+      data-title="Live Camera"
+      data-sub="Pantau kondisi lantai secara real-time">
+
+<div class="app">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main">
+        <header class="topbar" id="topbar"></header>
+        <main class="page">
+            <div class="dash two-col" style="grid-template-columns:minmax(0,1.8fr) minmax(0,1fr)">
+
+                <section class="card" aria-label="Tampilan kamera">
+                    <div class="feed" id="mainFeed">
+                        <span class="spill"></span>
+                        <span class="bbox"><em>Tumpahan Sirup (87%)</em></span>
+                        <time class="feed-time" data-stamp></time>
+                        <div class="cam-tools" role="toolbar" aria-label="Kontrol kamera">
+                            <button id="btnPhoto"><span id="icoPhoto"></span>Foto</button>
+                            <button id="btnRec" aria-pressed="false"><span id="icoRec"></span><span id="recLabel">Rekam</span></button>
+                            <button id="btnHD" aria-pressed="false"><span class="hd-tag" id="hdTag">HD</span>Kualitas</button>
+                            <button id="btnFull"><span id="icoFull"></span>Fullscreen</button>
+                        </div>
+                    </div>
+                    <p id="camInfo" style="margin-top:12px;color:var(--text-secondary)">Mode simulasi. Isi alamat IP ESP32-CAM di Pengaturan &rarr; Jaringan untuk menampilkan video asli.</p>
+                </section>
+
+                <section class="card" aria-labelledby="hRes">
+                    <div class="card-head"><h2 id="hRes">Hasil Deteksi AI</h2></div>
+                    <div class="det-list">
+                        <article class="det">
+                            <div data-feed="spill" data-size="sm"></div>
+                            <div>
+                                <h3 class="bad">Tumpahan Sirup</h3>
+                                <time>Confidence: <strong>87%</strong></time>
+                                <time>Ukuran: 12.5 cm&sup2;</time>
+                                <time>Posisi: Tengah</time>
+                            </div>
+                            <span class="badge danger">Status: Menunggu pembersihan</span>
+                        </article>
+                        <article class="det">
+                            <div data-feed="clean" data-size="sm"></div>
+                            <div>
+                                <h3 class="good">Tidak Ada Tumpahan</h3>
+                                <time>Confidence: <strong>96%</strong></time>
+                            </div>
+                            <span class="badge success">Status: Lantai Bersih</span>
+                        </article>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/notifications.js"></script>
+<script src="../assets/js/camera.js"></script>
+</body>
+</html>

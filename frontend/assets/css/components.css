@@ -158,3 +158,9 @@ tbody tr:hover { background: var(--surface-light); }
 .toast.error { background: #b42318; }
 @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } }
 @media (prefers-reduced-motion: reduce) { .toast { animation: none; } .progress i { transition: none; } }
+.feed-time {
+    position: absolute; top: 12px; right: 12px;
+    padding: 3px 10px; border-radius: 6px;
+    background: rgba(15, 25, 45, 0.72); color: #fff;
+    font-size: 13px; font-variant-numeric: tabular-nums;
+}

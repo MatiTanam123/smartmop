@@ -14,18 +14,18 @@
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+<body data-page="beranda" data-root=""
+    data-title="Selamat Datang!"
+    data-sub="Robot pel pintar dengan deteksi tumpahan menggunakan AI">
 
-<h3>Selamat Datang di SMARTMOP</h3>
-<p>Ini adalah halaman utama aplikasi SmartMop. Gunakan navigasi di bawah ini untuk mengakses fitur-fitur lainnya.</p>
-<nav class="navbar">
-    <a href="index.html">Beranda</a>
-    <a href="pages/kontrol-robot.html">Kontrol Robot</a>
-    <a href="pages/riwayat.html">Riwayat</a>
-    <a href="pages/status-sistems.html">Status Sistem</a>
-    <a href="pages/pengaturan.html">Pengaturan</a>
-    <a href="pages/tentang.html">Tentang</a>
-</nav>
+<div class="app">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main">
+        <header class="topbar" id="topbar"></header>
+
+        <main class="page">
+
+
 
 
 <section class="main-content">
@@ -69,8 +69,8 @@
 
             <div class="progress-container">
                 <div id="progressSabun"
-                     class="progress-bar sabun"
-                     style="width: 80%;">
+                    class="progress-bar sabun"
+                    style="width: 80%;">
                 </div>
             </div>
 
@@ -85,8 +85,8 @@
 
             <div class="progress-container">
                 <div id="progressBaterai"
-                     class="progress-bar baterai"
-                     style="width: 80%;">
+                    class="progress-bar baterai"
+                    style="width: 80%;">
                 </div>
             </div>
 
@@ -96,4 +96,112 @@
     </div>
 </section>
 
+<div class="dash">
+<!-- Live Camera-->
+<section class="card" aria-labelledby="hcam">
+    <div class="card-head">
+        <h2 id="hcam"> Live Camera &amp; Deteksi AI</h2>
+        <a class="link-all" href="pages/live-camera.html"> Buka Layar Penuh</a>
+    </div>
+    <div data-feed="spill" data-label="Tumpahan Sirup (..)" data-stam></div>
+    <div class="thumbs">
+        <figure><div data-feed="spill" data-size="sm"></div><figcaption>Sebelum Deteksi</figcaption></figure>
+        <figure><div data-feed="mop"></div><figcaption>Proses Mengepel</figcaption></figure>
+        <figure><div data-feed="clean"></div><figcaption>Setelah Mengepel</figcaption></figure>
+    </div>
+
+
+</section>
+
+
+
+
+    <!-- Bagian kontrol robot-->
+
+<!-- bagian ini dia manual ke otomatis-->
+<section class="card control" id="kontrol" aria-labelledby="htcl">
+    <div class="card-head" style="margin:0"><h2 id="htcl">Kontrol Robot</h2></div>
+    <div class="seg" role="group" aria-label="Mode robot" id="modeSeg">
+        <button type="button" data-mode="Otomatis" aria-pressed="true" id="modeAuto">
+        </button>
+        <button type="button" data-mode="Manual" aria-pressed="false" id="modeManual">
+        </button>
+    </div>
+
+
+<!-- bagian dia gerak ke depan belakang kiri kanan-->
+<div class="dpad" id="dpad" data-disable="true" role="group" aria-label="Arah gerak robot">
+    <button class="up" data-dir="maju" aria-label="Maju"></button>
+    <button class="down" data-dir="mundur" aria-label="Mundurs"></button>
+    <button class="stop" data-dir="berhenti" aria-label="Berhenti"></button>
+    <button class="right" data-dir="kanan" aria-label="Belok Kanan"></button>
+    <button class="left" data-dir="kiri" aria-label="Belok Kiri"></button>
+</div>
+
+
+<div class="act-row">
+    <button class="btn btn-success" id="btnStart"></button>
+    <button class="btn btn-danger" id="btnStop"></button>
+
+
+
+<!-- Bagian nyalakan sabun same pengepel-->
+
+<div class="tool-row">
+    <div class="tool-tile"><span id=icoPump></span>
+    <label class="switch">
+        <input type="checkbox" id="swPump" aria-label="Pompa sabun" checked><span class="switch-slider"></span>
+    </label>
+    </div>
+    <div class="tool-tile"><span id=icoMotor></span>
+    <label class="switch">
+        <input type="checkbox" id="swMotor" aria-label="Motor Pel" checked><span class="switch-slider"></span>
+    </label>
+    </div>
+
+
+
+        </div>
+</div>
+
+</section>
+
+<!-- Deteksi terkini Log-->
+<div class="stack">
+    <section class="card" aria-labelledby="hDet">
+        <div class="card-head"><h2 id="hDet">Deteksi Terkini</h2><a class="link-all" href="pages/riwayat.html">Lihat Semua</a></div>
+        <div class="det-llist" id="detList"></div>
+    </section>
+    <section class="card" aria-labelledby="hLog">
+        <div class="card-head"><h2 id="hlog">Log Aktivitas</h2><a class="link-all" href="pages/riwayat.html">Lihat Semua</a></div>
+        <ul class="log" id="logList"></ul>
+    </section>
+
+
+
+
+</div>
+</div>
+</main>
+</div>
+</div>
+<p class="jam"><span id="clockDate"></span> · <strong id="clockTime"></strong></p>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/notifications.js"></script>
+<script src="assets/js/robot-control.js"></script>
+<script src="assets/js/dashboard.js"></script>
+
+
+
+
+
+
+
 </body>
+</html>
+
+
+
+
