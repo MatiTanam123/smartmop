@@ -24,77 +24,50 @@
         <header class="topbar" id="topbar"></header>
 
         <main class="page">
+            <!-- Ringkasan Status robot-->
+            <section class="stats" aria-label="Ringkasan Satatus Robot">
+            <article class="card stat">
+                <span class="stat-icon tone-green"></span>
+                <div class="stat-body">
+                    <span>Status Robot</span>
+                    <strong class="checking" id="statStatus">Mengecek...</strong>
+                    <small id="statStatusSub">Menghubungkan ke server</small>
 
-
-
-
-<section class="main-content">
-    <h2>Fitur Utama</h2>
-
-    <p>
-        Di sini Anda dapat mengontrol robot, melihat riwayat
-        aktivitas, memeriksa status sistem, dan mengatur
-        preferensi aplikasi.
-    </p>
-
-    <div class="robot-container">
-
-        <!-- Status Robot -->
-        <div class="menu-robot">
-            <h3>Status Robot</h3>
-            <p id="statusRobot" class="status online">
-                Online
-            </p>
-        </div>
-
-        <!-- Mode Robot -->
-        <div class="menu-robot">
-            <h3>Mode Robot yang Digunakan</h3>
-
-            <select id="modeRobot">
-                <option value="Otomatis">Otomatis</option>
-                <option value="Manual">Manual</option>
-            </select>
-
-            <p id="infoMode">
-                Robot berjalan secara otomatis.
-            </p>
-        </div>
-
-        <!-- Level Sabun -->
-        <div class="menu-robot">
-            <h3>Level Sabun</h3>
-
-            <p id="nilaiSabun">80%</p>
-
-            <div class="progress-container">
-                <div id="progressSabun"
-                    class="progress-bar sabun"
-                    style="width: 80%;">
                 </div>
-            </div>
+            </article>
 
-            <p id="statusSabun">Sabun masih cukup</p>
-        </div>
+            <article class="card stat">
+                <span class="stat-icon tone-grey"></span>
+                    <div class="stat-body">
+                        <span>Mode</span>
+                        <strong id="statMode">Otomatis</strong>
+                        <small id="statModeSub">Menunggu Deteksi Tumpahan</small>
+                    </div>
+            </article>
 
-        <!-- Level Baterai -->
-        <div class="menu-robot">
-            <h3>Level Baterai</h3>
-
-            <p id="nilaiBaterai">80%</p>
-
-            <div class="progress-container">
-                <div id="progressBaterai"
-                    class="progress-bar baterai"
-                    style="width: 80%;">
+            <article class="card stat">
+                <span class="stat-icon tone-blue"></span>
+                <div class="stat-body">
+                    <span>Level Sabun</span>
+                    <strong id="soapValue">--</strong>
+                <div class="progress" role="progressbar" aria-label="Level sabun"><i id="soapBar" style="width:68%"></i></div>
                 </div>
-            </div>
+            </article>
+            <article class="card stat">
+                <span class="stat-icon tone-blue"></span>
+                <div class="stat-body">
+                    <span>Level Baterai</span>
+                    <strong id="soapValue">--</strong>
+                <div class="progress" role="progressbar" aria-label="Level baterai"><i id=batteryBar" style="width:68%"></i></div>
+                </div>
+            </article>
 
-            <p id="statusBaterai">Baterai cukup</p>
-        </div>
+            </section>
 
-    </div>
-</section>
+
+
+
+
 
 <div class="dash">
 <!-- Live Camera-->
@@ -192,6 +165,7 @@
 <script src="assets/js/notifications.js"></script>
 <script src="assets/js/robot-control.js"></script>
 <script src="assets/js/dashboard.js"></script>
+<script src="assets/js/status-koneksi.js"></script>   <!-- sebelum </body> -->
 
 
 
@@ -201,7 +175,6 @@
 
 </body>
 </html>
-
 
 
 
