@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Sistem | SmartMop</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS bawaan SmartMop -->
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!-- CSS halaman Status Sistem -->
+    <link rel="stylesheet" href="../assets/css/status-tentang.css">
+</head>
+
+<body data-page="status-sistem"
+      data-root="../"
+      data-title="Status Sistem"
+      data-sub="Pantau kondisi dan aktivitas SmartMop">
+
+    <div class="app">
+
+        <!-- Sidebar dari JavaScript teman -->
+        <aside class="sidebar" id="sidebar"></aside>
+
+        <div class="main">
+
+            <!-- Topbar -->
+            <header class="topbar" id="topbar"></header>
+
+            <main class="page">
+
+                <!-- Judul Halaman -->
+                <section class="card sm-hero">
+                    <div>
+                        <p class="sm-eyebrow">MONITORING SMARTMOP</p>
+                        <h2>Kondisi Sistem</h2>
+                        <p>
+                            Pantau koneksi perangkat dan
+                            aktivitas sistem robot SmartMop.
+                        </p>
+                    </div>
+
+                    <button class="btn btn-primary"
+                            id="refreshStatus">
+                        Periksa Koneksi
+                    </button>
+                </section>
+
+                <!-- Status Perangkat -->
+                <section class="sm-status-grid">
+
+                    <article class="card sm-panel">
+                        <span class="sm-label">Backend API</span>
+                        <strong id="apiState">Belum diperiksa</strong>
+                        <small id="apiNote">Menunggu pemeriksaan</small>
+                    </article>
+
+                    <article class="card sm-panel">
+                        <span class="sm-label">Status Robot</span>
+                        <strong id="robotState">Belum diketahui</strong>
+                        <small id="robotNote">Menunggu data backend</small>
+                    </article>
+
+                    <article class="card sm-panel">
+                        <span class="sm-label">ESP32-CAM</span>
+                        <strong>Belum diketahui</strong>
+                        <small>Status kamera belum tersedia</small>
+                    </article>
+
+                    <article class="card sm-panel">
+                        <span class="sm-label">ESP32 Controller</span>
+                        <strong>Belum diketahui</strong>
+                        <small>Status controller belum tersedia</small>
+                    </article>
+
+                </section>
+
+                <!-- Log Sistem -->
+                <section class="card sm-content">
+
+                    <div class="sm-section-head">
+                        <div>
+                            <h2>Log Aktivitas Sistem</h2>
+                            <p>
+                                Catatan aktivitas selama halaman
+                                ini dibuka.
+                            </p>
+                        </div>
+
+                        <button class="btn btn-ghost"
+                                id="clearLogs">
+                            Bersihkan Log
+                        </button>
+                    </div>
+
+                    <div id="systemLogs"
+                         class="sm-logs"
+                         aria-live="polite">
+                        <p class="sm-muted">
+                            Belum ada aktivitas yang tercatat.
+                        </p>
+                    </div>
+
+                </section>
+
+                <!-- Informasi Sistem -->
+                <section class="card sm-content">
+                    <h2>Informasi Koneksi</h2>
+
+                    <p class="sm-muted">
+                        Status koneksi akan diperiksa melalui
+                        backend SmartMop. Status perangkat
+                        yang belum tersedia tidak akan
+                        ditampilkan sebagai online.
+                    </p>
+
+                    <p class="sm-endpoint" id="apiAddress"></p>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/status-page.js"></script>
+
+</body>
+</html>

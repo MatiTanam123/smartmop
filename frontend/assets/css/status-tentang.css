@@ -1,0 +1,390 @@
+
+/* =========================================
+   SMARTMOP - STATUS SISTEM & TENTANG
+   ========================================= */
+
+.sm-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 28px;
+    margin-bottom: 24px;
+}
+
+.sm-hero h2 {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 8px 0;
+}
+
+.sm-hero p {
+    color: #64748b;
+    line-height: 1.7;
+}
+
+.sm-eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #2563eb !important;
+}
+
+.sm-status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.sm-panel {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.sm-label {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.sm-panel strong {
+    font-size: 20px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.sm-panel small {
+    color: #94a3b8;
+    line-height: 1.5;
+}
+
+.sm-content {
+    padding: 26px;
+    margin-bottom: 24px;
+}
+
+.sm-content h2 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.sm-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.sm-section-head p {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.sm-logs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.sm-log-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    font-size: 13px;
+}
+
+.sm-log-time {
+    color: #64748b;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.sm-muted {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.sm-endpoint {
+    margin-top: 14px;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+/* Warna status koneksi */
+
+.sm-online {
+    color: #16a34a;
+}
+
+.sm-offline {
+    color: #dc2626;
+}
+
+.sm-unknown {
+    color: #64748b;
+}
+
+/* Responsive */
+
+@media (max-width: 1100px) {
+    .sm-status-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .sm-hero,
+    .sm-section-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sm-status-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sm-hero,
+    .sm-content {
+        padding: 20px;
+    }
+
+    .sm-log-item {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
+
+
+/* =========================================
+   SMARTMOP - HALAMAN TENTANG
+   ========================================= */
+
+/* Hero / Pengenalan SmartMop */
+
+.sm-about-hero {
+    background: #142844;
+    color: #ffffff;
+    padding: 36px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+}
+
+.sm-version {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.sm-about-hero h2 {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.4;
+    max-width: 650px;
+    margin-bottom: 14px;
+}
+
+.sm-about-hero p {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #cbd5e1;
+    max-width: 780px;
+}
+
+/* Bagian Fitur */
+
+.sm-about-section {
+    margin-bottom: 30px;
+}
+
+.sm-about-section > h2,
+.sm-team-heading h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #142844;
+    margin-bottom: 18px;
+}
+
+.sm-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.sm-feature-card {
+    padding: 26px;
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.sm-feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.sm-feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: #eff6ff;
+    border-radius: 12px;
+    font-size: 24px;
+    margin-bottom: 18px;
+}
+
+.sm-feature-card h3 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #142844;
+}
+
+.sm-feature-card p {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #64748b;
+}
+
+/* Teknologi */
+
+.sm-tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.sm-tech-list span {
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Tim Pengembang */
+
+.sm-team-heading {
+    margin-bottom: 20px;
+}
+
+.sm-team-heading h2 {
+    margin-bottom: 8px;
+}
+
+.sm-team-heading p {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.sm-team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.sm-team-card {
+    padding: 28px 20px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.sm-team-card:hover {
+    transform: translateY(-4px);
+}
+
+.sm-team-photo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #eff6ff;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.sm-team-card h3 {
+    font-size: 16px;
+    font-weight: 800;
+    color: #142844;
+    margin-bottom: 8px;
+}
+
+.sm-team-card p {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* Footer */
+
+.sm-about-footer {
+    text-align: center;
+    padding: 25px 15px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 10px;
+}
+
+.sm-about-footer p {
+    font-size: 13px;
+    font-weight: 700;
+    color: #142844;
+    margin-bottom: 6px;
+}
+
+.sm-about-footer small {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* Responsive Tablet */
+
+@media (max-width: 900px) {
+    .sm-feature-grid,
+    .sm-team-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Responsive HP */
+
+@media (max-width: 600px) {
+    .sm-about-hero {
+        padding: 24px;
+    }
+
+    .sm-about-hero h2 {
+        font-size: 22px;
+    }
+
+    .sm-feature-grid,
+    .sm-team-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sm-feature-card,
+    .sm-team-card {
+        padding: 22px;
+    }
+}
