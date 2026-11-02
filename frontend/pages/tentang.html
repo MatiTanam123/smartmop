@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang | SmartMop</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS bawaan SmartMop -->
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/index.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <!-- CSS tambahan -->
+    <link rel="stylesheet" href="../assets/css/status-tentang.css">
+</head>
+
+<body data-page="tentang"
+      data-root="../"
+      data-title="Tentang SmartMop"
+      data-sub="Informasi aplikasi, fitur, dan tim pengembang">
+
+    <div class="app">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar"></aside>
+
+        <div class="main">
+
+            <!-- Topbar -->
+            <header class="topbar" id="topbar"></header>
+
+            <main class="page">
+
+                <!-- Pengenalan SmartMop -->
+                <section class="card sm-about-hero">
+
+                    <span class="sm-version">
+                        SmartMop v1.0
+                    </span>
+
+                    <h2>
+                        Robot Pel Pintar dengan
+                        Deteksi Tumpahan Menggunakan AI
+                    </h2>
+
+                    <p>
+                        SmartMop merupakan sistem robot
+                        pembersih lantai pintar yang
+                        dirancang untuk mendeteksi
+                        tumpahan cairan menggunakan
+                        Internet of Things (IoT) dan membantu proses
+                        pembersihan lantai secara otomatis.
+                    </p>
+
+                </section>
+
+                <!-- Fitur Utama -->
+                <section class="sm-about-section">
+
+                    <h2>Fitur Utama SmartMop</h2>
+
+                    <div class="sm-feature-grid">
+
+                        <article class="card sm-feature-card">
+                            <div class="sm-feature-icon">📷</div>
+                            <h3>Deteksi Tumpahan</h3>
+                            <p>
+                                Menggunakan kamera ESP32-CAM
+                                dan model AI untuk membantu
+                                mengidentifikasi tumpahan
+                                cairan pada lantai.
+                            </p>
+                        </article>
+
+                        <article class="card sm-feature-card">
+                            <div class="sm-feature-icon">🤖</div>
+                            <h3>Pembersihan Otomatis</h3>
+                            <p>
+                                Robot dirancang untuk
+                                melakukan proses pembersihan
+                                pada area yang terdeteksi
+                                mengalami tumpahan.
+                            </p>
+                        </article>
+
+                        <article class="card sm-feature-card">
+                            <div class="sm-feature-icon">📊</div>
+                            <h3>Monitoring Sistem</h3>
+                            <p>
+                                Website menyediakan
+                                antarmuka untuk memantau
+                                kondisi sistem, kamera,
+                                dan aktivitas robot.
+                            </p>
+                        </article>
+
+                    </div>
+
+                </section>
+
+                <!-- Teknologi -->
+                <section class="card sm-content">
+
+                    <h2>Teknologi yang Digunakan</h2>
+
+                    <p class="sm-muted">
+                        SmartMop menggabungkan perangkat
+                        keras, kecerdasan buatan, dan
+                        teknologi web.
+                    </p>
+
+                    <div class="sm-tech-list">
+                        <span>ESP32-CAM</span>
+                        <span>ESP32 DevKit</span>
+                        <span>Python</span>
+                        <span>YOLO</span>
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                    </div>
+
+                </section>
+
+                <!-- Tim Pengembang -->
+                <section class="sm-about-section">
+
+                    <div class="sm-team-heading">
+                        <h2>Tim Pengembang</h2>
+                        <p>
+                            Tim yang berkontribusi dalam
+                            perancangan dan pengembangan
+                            sistem SmartMop.
+                        </p>
+                    </div>
+
+                    <div class="sm-team-grid">
+
+                        <!-- Anggota 1 -->
+                        <article class="card sm-team-card">
+
+                            <img
+                                src="../assets/images/anggota1.jpg"
+                                alt="Foto anggota pertama"
+                                class="sm-team-photo"
+                                onerror="this.style.display='none'">
+
+                            <h3>Jeremy Elton Firmando Pandiangan</h3>
+                            <p>Tim Pengembang SmartMop</p>
+
+                        </article>
+
+                        <!-- Anggota 2 -->
+                        <article class="card sm-team-card">
+
+                            <img
+                                src="../assets/images/anggota2.jpg"
+                                alt="Foto anggota kedua"
+                                class="sm-team-photo"
+                                onerror="this.style.display='none'">
+
+                            <h3>Imam Akbar Arbain</h3>
+                            <p>Tim Pengembang SmartMop</p>
+
+                        </article>
+
+                        <!-- Anggota 3 -->
+                        <article class="card sm-team-card">
+
+                            <img
+                                src="../assets/images/anggota3.jpg"
+                                alt="Foto anggota ketiga"
+                                class="sm-team-photo"
+                                onerror="this.style.display='none'">
+
+                            <h3>Dhyanesa Amirah Kanandhi</h3>
+                            <p>Tim Pengembang SmartMop</p>
+
+                        </article>
+
+                    </div>
+
+                </section>
+
+                <!-- Footer -->
+                <section class="sm-about-footer">
+                    <p>
+                        SmartMop — Smart AI Floor Cleaning Robot
+                    </p>
+                    <small>
+                        Dikembangkan sebagai proyek
+                        sistem robot pembersih lantai pintar.
+                    </small>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- JavaScript bawaan -->
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/app.js"></script>
+
+</body>
+</html>
