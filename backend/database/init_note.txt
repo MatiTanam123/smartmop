@@ -1,0 +1,11 @@
+DATABASE SETUP
+1. Buat database smartmop_db di pgAdmin.
+2. Pilih database smartmop_db, lalu buka Query Tool.
+3. Jalankan seluruh isi file schema.sql (satu file lengkap).
+4. Setelah selesai, jalankan verify.sql untuk melihat tabel dan data awal.
+
+Catatan:
+- schema_base.sql adalah sembilan tabel utama dari rancangan awal.
+- migrations/001_app_settings.sql menambahkan konfigurasi website/jaringan.
+- migrations/002_camera_frames.sql menambahkan pencatatan setiap frame kamera dan relasinya ke detections.
+- schema.sql sudah menggabungkan ketiganya agar mudah dijalankan sekaligus dari pgAdmin.
