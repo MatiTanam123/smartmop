@@ -1,86 +1,86 @@
-/* SMARTMOP - api.js
-   Pengaturan tersimpan + pemanggil API. Jika backend belum berjalan,
-   data contoh (mock) dipakai agar tampilan tetap bisa dicoba. */
+/* SmartMop API client - diselaraskan dengan Flask backend */
 window.SM = window.SM || {};
 (function (SM) {
-    const KEY = "smartmop.settings";
-    SM.defaults = {
-        namaRobot: "SmartMop-01", modeAwal: "Otomatis", kecepatan: "Sedang",
-        waktuPemotretan: "3", confidence: "0.6", pengulangan: "2", volumeSabun: "Sedang",
-        ukuranModel: "640", bbox: true, simpanGambar: true,
-        batasBaterai: "20", batasSabun: "15", stopBaterai: true,
-        notifWeb: true, notifSuara: true, notifBrowser: false, notifSelesai: true, notifError: true,
-        ssid: "", serverIP: "", apiPort: "5000", apiPath: "/api", cameraIP: "", controllerIP: ""
-    };
-    SM.settings = () => {
-        try { return Object.assign({}, SM.defaults, JSON.parse(localStorage.getItem(KEY) || "{}")); }
-        catch (e) { return Object.assign({}, SM.defaults); }
-    };
-    SM.saveSettings = (s) => localStorage.setItem(KEY, JSON.stringify(s));
-    SM.apiBase = () => {
-        const s = SM.settings();
-        return `http://${s.serverIP || location.hostname || "localhost"}:${s.apiPort || 5000}${s.apiPath || "/api"}`;
-    };
+  const KEY = "smartmop.settings";
+  SM.defaults = {
+    namaRobot:"SmartMop-01", modeAwal:"Otomatis", kecepatan:"Sedang",
+    waktuPemotretan:"3", confidence:"0.65", pengulangan:"2", volumeSabun:"Sedang",
+    ukuranModel:"640", bbox:true, simpanGambar:true, batasBaterai:"20",
+    batasSabun:"15", stopBaterai:true, notifWeb:true, notifSuara:true,
+    notifBrowser:false, notifSelesai:true, notifError:true,
+    ssid:"", serverIP:"", apiPort:"5000", apiPath:"/api", cameraIP:"", controllerIP:""
+  };
 
-    SM.api = async function (path, opt = {}) {
-        const ctl = new AbortController();
-        const timer = setTimeout(() => ctl.abort(), 2000);
-        try {
-            const res = await fetch(SM.apiBase() + path, {
-                method: opt.method || "GET", signal: ctl.signal,
-                headers: { "Content-Type": "application/json" },
-                body: opt.body ? JSON.stringify(opt.body) : undefined
-            });
-            clearTimeout(timer);
-            if (!res.ok) throw new Error(res.status);
-            SM.demo = false;
-            return await res.json();
-        } catch (e) {
-            clearTimeout(timer);
-            SM.demo = true;
-            if (!SM._warned && SM.toast) {
-                SM._warned = true;
-                SM.toast("Server belum terhubung. Menampilkan data contoh.", "warn");
-            }
-            return SM.mock(path, opt);
-        }
-    };
+  SM.settings = () => {
+    try { return Object.assign({}, SM.defaults, JSON.parse(localStorage.getItem(KEY) || "{}")); }
+    catch (_) { return Object.assign({}, SM.defaults); }
+  };
+  SM.saveSettings = (s) => localStorage.setItem(KEY, JSON.stringify(s));
+  SM.apiBase = () => {
+    const s = SM.settings();
+    const host = (s.serverIP || location.hostname || "127.0.0.1").trim();
+    const port = s.apiPort || "5000";
+    const prefix = (s.apiPath || "/api").replace(/\/+$/, "");
+    return `http://${host}:${port}${prefix}`;
+  };
+  SM.unwrap = (payload) => payload && Object.prototype.hasOwnProperty.call(payload, "data") ? payload.data : payload;
 
-    /* ---------- Data contoh ---------- */
-    const pad = (n) => String(n).padStart(2, "0");
-    const ago = (min) => { const d = new Date(Date.now() - min * 60000); return d; };
-    const hm = (d) => `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-    const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  SM.api = async (path, opt = {}) => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), opt.timeout || 8000);
+    let response;
+    try {
+      response = await fetch(SM.apiBase() + path, {
+        method: opt.method || "GET",
+        headers: Object.assign({ "Accept":"application/json" }, opt.body ? {"Content-Type":"application/json"} : {}, opt.headers || {}),
+        body: opt.body === undefined ? undefined : JSON.stringify(opt.body),
+        signal: controller.signal,
+        cache: "no-store"
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || payload.success === false) {
+        const err = new Error(payload.message || `HTTP ${response.status}`);
+        err.status = response.status; err.payload = payload; throw err;
+      }
+      SM.demo = false;
+      SM.lastApiError = null;
+      return payload;
+    } catch (err) {
+      SM.demo = true;
+      SM.lastApiError = err;
+      throw err;
+    } finally { clearTimeout(timeout); }
+  };
+  SM.getData = async (path, opt) => SM.unwrap(await SM.api(path, opt));
+  SM.command = (command_type, command_payload = {}, device_code = "ESP32_MAIN_01", session_id = null) =>
+    SM.getData("/commands", {method:"POST", body:{device_code, session_id, command_type, command_payload}});
 
-    SM.mock = function (path) {
-        if (path.startsWith("/dashboard")) {
-            return {
-                robot: { status: "Online", mode: "Otomatis", soap: 68, battery: 85 },
-                detections: [
-                    { label: "Tumpahan Sirup", confidence: 87, time: hm(ago(0)), spill: true, status: "Menunggu Pembersihan" },
-                    { label: "Tidak Ada Tumpahan", confidence: 96, time: hm(ago(1)), spill: false, status: "Lantai Bersih" }
-                ],
-                log: [
-                    { time: hm(ago(0)), text: "Tumpahan terdeteksi (87%)", type: "danger" },
-                    { time: hm(ago(0)), text: "Robot bergerak menuju lokasi", type: "info" },
-                    { time: hm(ago(0)), text: "Proses mengepel", type: "info" },
-                    { time: hm(ago(60)), text: "Pembersihan selesai", type: "success" },
-                    { time: hm(ago(120)), text: "Lantai bersih (96%)", type: "success" }
-                ]
-            };
-        }
-        if (path.startsWith("/history")) {
-            const rows = [
-                [0, "Tumpahan Sirup", 87, "Dibersihkan"], [14, "Tidak Ada Tumpahan", 96, "-"],
-                [38, "Tumpahan Sirup", 82, "Dibersihkan"], [55, "Tidak Ada Tumpahan", 98, "-"],
-                [92, "Tumpahan Sirup", 90, "Dibersihkan"], [140, "Tumpahan Sirup", 74, "Gagal"],
-                [1500, "Tumpahan Sirup", 91, "Dibersihkan"], [1530, "Tidak Ada Tumpahan", 95, "-"]
-            ];
-            return rows.map((r, i) => {
-                const d = ago(r[0]);
-                return { id: i + 1, date: ymd(d), time: hm(d), label: r[1], spill: r[1] !== "Tidak Ada Tumpahan", confidence: r[2], status: r[3] };
-            });
-        }
-        return { ok: true, mock: true };
-    };
+  const pad = n => String(n).padStart(2,"0");
+  SM.formatTime = value => {
+    if (!value) return "--:--:--";
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? String(value) : d.toLocaleTimeString("id-ID");
+  };
+  SM.formatDate = value => {
+    if (!value) return "-";
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? String(value) : d.toLocaleDateString("id-ID");
+  };
+  SM.toast = (message, type="") => {
+    let box = document.getElementById("toasts");
+    if (!box) { box=document.createElement("div"); box.id="toasts"; box.className="toasts"; document.body.appendChild(box); }
+    const item=document.createElement("div"); item.className=`toast ${type}`; item.textContent=message; box.appendChild(item);
+    setTimeout(()=>item.remove(),4500);
+  };
+  SM.addLog = (message, type="info") => {
+    document.dispatchEvent(new CustomEvent("sm:log-local",{detail:{message,type,created_at:new Date().toISOString()}}));
+  };
+  SM.setOnline = on => {
+    const el=document.getElementById("onlineState");
+    if (!el) return;
+    el.classList.toggle("off",!on);
+    if (el.lastElementChild) el.lastElementChild.textContent=on?"Online":"Offline";
+  };
+  SM.icon = SM.icon || (name => name);
+  SM.feed = (kind, label="", size="") => `<div class="feed ${kind==="mop"?"mop":""} ${size}">${kind==="spill"?'<span class="spill"></span><span class="bbox"></span>':kind==="mop"?'<span class="pad"></span><span class="pad"></span>':""}</div>`;
 })(window.SM);

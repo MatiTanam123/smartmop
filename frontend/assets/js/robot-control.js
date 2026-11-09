@@ -1,59 +1,64 @@
-/* SMARTMOP - robot-control.js : mode, arah, mulai/berhenti, pompa & motor */
-(function (SM) {
-    const $ = (id) => document.getElementById(id);
-    let mode = "Otomatis", cleaning = false;
-
-    function setMode(m) {
-        mode = m;
-        document.querySelectorAll("#modeSeg button").forEach((b) => b.setAttribute("aria-pressed", b.dataset.mode === m));
-        $("dpad").dataset.disabled = m === "Otomatis";
-        document.dispatchEvent(new CustomEvent("sm:mode", { detail: m }));
-    }
-
-    async function send(path, body, okMsg) {
-        const r = await SM.api(path, { method: "POST", body });
-        if (okMsg) SM.addLog(okMsg, "info");
-        return r;
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        if (!$("modeSeg")) return;
-        $("modeAuto").innerHTML = SM.icon("settings") + "Otomatis";
-        $("modeManual").innerHTML = SM.icon("gamepad") + "Manual";
-        const arrows = { up: "up", left: "left", stop: "stop", right: "right", down: "down" };
-        Object.keys(arrows).forEach((k) => (document.querySelector(`.dpad .${k}`).innerHTML = SM.icon(arrows[k])));
-        $("btnStart").innerHTML = SM.icon("play") + "Mulai Mengepel";
-        $("btnStop").innerHTML = SM.icon("stop") + "Berhenti";
-        $("icoPump").innerHTML = SM.icon("drop") + "Pompa Sabun";
-        $("icoMotor").innerHTML = SM.icon("mop") + "Motor Pel";
-
-        setMode(SM.settings().modeAwal || "Otomatis");
-
-        $("modeSeg").addEventListener("click", (e) => {
-            const b = e.target.closest("button"); if (!b || b.dataset.mode === mode) return;
-            setMode(b.dataset.mode);
-            send("/robot/mode", { mode: b.dataset.mode }, `Mode ${b.dataset.mode} diaktifkan`);
-        });
-
-        $("dpad").addEventListener("click", (e) => {
-            const b = e.target.closest("button"); if (!b) return;
-            if (mode !== "Manual") return SM.toast("Pindah ke mode Manual untuk menggerakkan robot.", "warn");
-            send("/robot/move", { direction: b.dataset.dir }, `Robot: ${b.dataset.dir}`);
-        });
-
-        $("btnStart").addEventListener("click", () => {
-            if (cleaning) return SM.toast("Proses mengepel sedang berjalan.");
-            cleaning = true;
-            send("/robot/clean", { action: "start" }, "Proses mengepel dimulai");
-            SM.toast("Proses mengepel dimulai.", "success");
-        });
-        $("btnStop").addEventListener("click", () => {
-            cleaning = false;
-            send("/robot/clean", { action: "stop" }, "Proses mengepel dihentikan");
-            SM.toast("Proses mengepel dihentikan.");
-        });
-
-        $("swPump").addEventListener("change", (e) => send("/robot/pump", { on: e.target.checked }, `Pompa sabun ${e.target.checked ? "menyala" : "mati"}`));
-        $("swMotor").addEventListener("change", (e) => send("/robot/motor", { on: e.target.checked }, `Motor pel ${e.target.checked ? "menyala" : "mati"}`));
+/* Kontrol robot memakai endpoint yang benar-benar tersedia pada Flask backend. */
+(function(SM){
+  const $=id=>document.getElementById(id);
+  let mode="Otomatis", activeSession=null;
+  const modeToDb=m=>m==="Otomatis"?"automatic":"manual";
+  async function saveMode(m){
+    await SM.api("/settings",{method:"PUT",body:{operation_mode:modeToDb(m)}});
+    const s=SM.settings(); s.modeAwal=m; SM.saveSettings(s);
+  }
+  async function sendMove(direction){
+    return SM.command("move",{direction},"ESP32_MAIN_01");
+  }
+  document.addEventListener("DOMContentLoaded",()=>{
+    if(!$("modeSeg")) return;
+    $("modeAuto").innerHTML=SM.icon("settings")+"Otomatis";
+    $("modeManual").innerHTML=SM.icon("gamepad")+"Manual";
+    ["up","left","stop","right","down"].forEach(k=>{const b=document.querySelector(`.dpad .${k}`);if(b)b.innerHTML=SM.icon(k);});
+    $("btnStart").innerHTML=SM.icon("play")+"Mulai Mengepel";
+    $("btnStop").innerHTML=SM.icon("stop")+"Berhenti";
+    const setMode=m=>{
+      mode=m;
+      document.querySelectorAll("#modeSeg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===m)));
+      if($("dpad")) $("dpad").dataset.disabled=String(m!=="Manual");
+      document.dispatchEvent(new CustomEvent("sm:mode",{detail:m}));
+    };
+    setMode(SM.settings().modeAwal||"Otomatis");
+    $("modeSeg").addEventListener("click",async e=>{
+      const b=e.target.closest("button"); if(!b||!b.dataset.mode)return;
+      const next=b.dataset.mode;
+      try{await saveMode(next);setMode(next);SM.toast(`Mode ${next} tersimpan di database.`,"success");}
+      catch(err){SM.toast(`Gagal mengubah mode: ${err.message}`,"error");}
     });
+    $("dpad").addEventListener("click",async e=>{
+      const b=e.target.closest("button"); if(!b)return;
+      if(mode!=="Manual")return SM.toast("Pilih mode Manual terlebih dahulu.","warn");
+      try{await sendMove(b.dataset.dir);SM.toast(`Perintah arah ${b.dataset.dir} masuk antrean.`,"success");}
+      catch(err){SM.toast(`Perintah gagal: ${err.message}`,"error");}
+    });
+    $("btnStart").addEventListener("click",async()=>{
+      try{
+        const created=await SM.getData("/cleaning/start",{method:"POST",body:{operation_mode:modeToDb(mode),device_code:"ESP32_MAIN_01"}});
+        activeSession=created.session_id;
+        await SM.command("clean_start",{action:"start"},"ESP32_MAIN_01",activeSession);
+        SM.toast("Sesi dibuat dan perintah dikirim ke antrean robot.","success");
+        SM.addLog("Perintah mulai mengepel dikirim.");
+      }catch(err){SM.toast(`Gagal memulai pembersihan: ${err.message}`,"error");}
+    });
+    $("btnStop").addEventListener("click",async()=>{
+      try{
+        await SM.command("clean_stop",{action:"stop"},"ESP32_MAIN_01",activeSession);
+        if(activeSession) await SM.api(`/cleaning/${activeSession}/status`,{method:"PUT",body:{session_status:"cancelled",notes:"Dihentikan dari dashboard"}});
+        activeSession=null; SM.toast("Perintah berhenti dikirim ke robot.","success");
+      }catch(err){SM.toast(`Gagal menghentikan robot: ${err.message}`,"error");}
+    });
+    $("swPump")?.addEventListener("change",async e=>{
+      try{await SM.command("pump_set",{on:e.target.checked});SM.toast("Perintah pompa dikirim.");}
+      catch(err){e.target.checked=!e.target.checked;SM.toast(err.message,"error");}
+    });
+    $("swMotor")?.addEventListener("change",async e=>{
+      try{await SM.command("mop_motor_set",{on:e.target.checked});SM.toast("Perintah motor pel dikirim.");}
+      catch(err){e.target.checked=!e.target.checked;SM.toast(err.message,"error");}
+    });
+  });
 })(window.SM);

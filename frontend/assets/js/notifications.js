@@ -4,11 +4,7 @@
         const bell = document.getElementById("bell");
         if (!bell) return;
         const s = SM.settings();
-        let items = [
-            { t: "Tumpahan terdeteksi (87%)", s: "Menunggu pembersihan" },
-            { t: "Level sabun 68%", s: "Masih cukup" },
-            { t: "Baterai 85%", s: "Kondisi baik" }
-        ];
+        let items = [];
         const render = (open) => {
             const n = items.length;
             bell.innerHTML = `<button aria-label="Notifikasi, ${n} belum dibaca" aria-expanded="${!!open}">${SM.icon("bell")}

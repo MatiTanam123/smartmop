@@ -107,10 +107,9 @@ window.SM = window.SM || {};
 
         $("btnEmergency")?.addEventListener("click", async () => {
             if (!confirm("Hentikan semua motor dan pompa robot sekarang?")) return;
-            await SM.api("/robot/emergency-stop", { method: "POST" });
-            SM.setOnline(false);
-            SM.addLog("Henti darurat diaktifkan", "danger");
-            SM.toast("Henti darurat aktif. Robot dihentikan.", "error");
+            await SM.command("emergency_stop", { stop_all: true }, "ESP32_MAIN_01");
+            SM.addLog("Perintah henti darurat masuk antrean.", "danger");
+            SM.toast("Perintah henti darurat dikirim. Pastikan robot juga memiliki pemutus daya fisik.", "warn");
         });
     }
 

@@ -1,64 +1,45 @@
-"""Flask application factory for SmartMop."""
-from __future__ import annotations
-from pathlib import Path
+import os
+from flask import Flask, jsonify
+from flask_cors import CORS
+from dotenv import load_dotenv
 
-from flask import Flask, jsonify, send_from_directory, request
+from routes.device_routes import device_bp
+from routes.detection_routes import detection_bp
+from routes.cleaning_routes import cleaning_bp
+from routes.command_routes import command_bp
+from routes.settings_routes import settings_bp
+from routes.dashboard_routes import dashboard_bp
+from routes.log_routes import log_bp
 
-from .config import Config
-from .routes.api import api
-from .ml.inference import SpillDetector
+def create_app():
+    load_dotenv()
 
-
-def create_app(config_object=Config) -> Flask:
-    project_root = Path(__file__).resolve().parents[1]
     app = Flask(__name__)
-    app.config.from_object(config_object)
-    app.config["FRONTEND_DIR"] = project_root / "frontend"
-    app.config["CAPTURE_DIR"] = project_root / "backend" / "storage" / "captures"
-    app.config["CAPTURE_DIR"].mkdir(parents=True, exist_ok=True)
+    app.config["DEBUG"] = os.getenv("FLASK_DEBUG", "false").lower() == "true"
+    app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024  # 10 MB
+    CORS(app)  # Batasi origins saat deploy, jangan biarkan terbuka tanpa kebutuhan.
 
-    app.extensions["spill_detector"] = SpillDetector(
-        app.config["ML_MODEL_PATH"], app.config["ML_IMAGE_SIZE"]
-    )
-    app.register_blueprint(api)
+    @app.get("/api/health")
+    def health():
+        return jsonify({
+            "success": True,
+            "message": "SmartMop API is running"
+        }), 200
 
-    @app.after_request
-    def add_cors_headers(response):
-        origins = app.config.get("CORS_ORIGINS", "*")
-        origin = request.headers.get("Origin")
-        if origins == "*":
-            response.headers["Access-Control-Allow-Origin"] = "*"
-        elif origin and origin in [x.strip() for x in origins.split(",")]:
-            response.headers["Access-Control-Allow-Origin"] = origin
-            response.headers.add("Vary", "Origin")
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Device-Key"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-        response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-        return response
-
-    @app.errorhandler(413)
-    def file_too_large(_error):
-        return jsonify({"ok": False, "error": "Ukuran gambar melebihi batas MAX_UPLOAD_MB."}), 413
+    app.register_blueprint(device_bp, url_prefix="/api")
+    app.register_blueprint(detection_bp, url_prefix="/api")
+    app.register_blueprint(cleaning_bp, url_prefix="/api")
+    app.register_blueprint(command_bp, url_prefix="/api")
+    app.register_blueprint(settings_bp, url_prefix="/api")
+    app.register_blueprint(dashboard_bp, url_prefix="/api")
+    app.register_blueprint(log_bp, url_prefix="/api")
 
     @app.errorhandler(404)
     def not_found(_error):
-        if request.path.startswith("/api/"):
-            return jsonify({"ok": False, "error": "Endpoint API tidak ditemukan."}), 404
-        return jsonify({"ok": False, "error": "Halaman atau file tidak ditemukan."}), 404
+        return jsonify({"success": False, "message": "Endpoint tidak ditemukan"}), 404
 
-    @app.errorhandler(500)
-    def internal_error(_error):
-        app.logger.exception("Unhandled SmartMop backend error")
-        return jsonify({"ok": False, "error": "Terjadi kesalahan internal pada backend. Periksa terminal server."}), 500
-
-    @app.get("/")
-    def home():
-        return send_from_directory(app.config["FRONTEND_DIR"], "index.html")
-
-    @app.get("/<path:asset_path>")
-    def frontend_files(asset_path: str):
-        # API endpoints are registered above; this catch-all only serves files.
-        return send_from_directory(app.config["FRONTEND_DIR"], asset_path)
+    @app.errorhandler(413)
+    def file_too_large(_error):
+        return jsonify({"success": False, "message": "Ukuran request terlalu besar"}), 413
 
     return app

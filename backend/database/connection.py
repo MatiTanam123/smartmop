@@ -1,31 +1,31 @@
-"""Small psycopg 3 connection helper."""
-from contextlib import contextmanager
-from typing import Iterator
 
+import os
 import psycopg
 from psycopg.rows import dict_row
-from flask import current_app
+from dotenv import load_dotenv
+
+# Lokasi folder backend
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))
+)
+
+# Membaca .env dari folder backend
+ENV_PATH = os.path.join(BASE_DIR, ".env")
+load_dotenv(ENV_PATH)
 
 
-@contextmanager
-def get_db() -> Iterator[psycopg.Connection]:
-    """Open one short-lived database connection for a request/service call."""
-    conn = psycopg.connect(
-        current_app.config["DATABASE_URL"],
+def get_db_connection():
+    DATABASE_URL = os.getenv("DATABASE_URL")
+
+    if not DATABASE_URL:
+        raise RuntimeError(
+            "DATABASE_URL tidak ditemukan. Periksa file .env"
+        )
+
+    connection = psycopg.connect(
+        DATABASE_URL,
         row_factory=dict_row,
-        connect_timeout=5,
+        connect_timeout=10
     )
-    try:
-        yield conn
-        conn.commit()
-    except Exception:
-        conn.rollback()
-        raise
-    finally:
-        conn.close()
 
-
-def ping_database() -> bool:
-    with get_db() as conn:
-        conn.execute("SELECT 1")
-    return True
+    return connection
