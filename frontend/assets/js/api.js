@@ -18,10 +18,24 @@ window.SM = window.SM || {};
   SM.saveSettings = (s) => localStorage.setItem(KEY, JSON.stringify(s));
   SM.apiBase = () => {
     const s = SM.settings();
-    const host = (s.serverIP || location.hostname || "127.0.0.1").trim();
-    const port = s.apiPort || "5000";
-    const prefix = (s.apiPath || "/api").replace(/\/+$/, "");
-    return `http://${host}:${port}${prefix}`;
+    const prefix = (s.apiPath || "/api").trim().replace(/^\/*/, "/").replace(/\/+$/, "");
+    const configured = String(s.serverIP || "").trim();
+    const localHost = ["localhost", "127.0.0.1", ""].includes(location.hostname);
+
+    // Recommended for Railway: save the complete HTTPS origin in Pengaturan,
+    // for example https://smartmop-api.up.railway.app
+    if (/^https?:\/\//i.test(configured)) {
+      const parsed = new URL(configured);
+      return `${parsed.origin}${prefix}`;
+    }
+
+    // Backward compatibility: serverIP may still contain only an IP/hostname.
+    const host = configured || (localHost ? "127.0.0.1" : location.hostname);
+    const protocol = location.protocol === "https:" && !localHost ? "https:" : "http:";
+    const port = String(s.apiPort || "5000").trim();
+    const needsPort = !configured.includes(":") && port &&
+      !((protocol === "https:" && port === "443") || (protocol === "http:" && port === "80"));
+    return `${protocol}//${host}${needsPort ? `:${port}` : ""}${prefix}`;
   };
   SM.unwrap = (payload) => payload && Object.prototype.hasOwnProperty.call(payload, "data") ? payload.data : payload;
 
@@ -82,5 +96,6 @@ window.SM = window.SM || {};
     if (el.lastElementChild) el.lastElementChild.textContent=on?"Online":"Offline";
   };
   SM.icon = SM.icon || (name => name);
-  SM.feed = (kind, label="", size="") => `<div class="feed ${kind==="mop"?"mop":""} ${size}">${kind==="spill"?'<span class="spill"></span><span class="bbox"></span>':kind==="mop"?'<span class="pad"></span><span class="pad"></span>':""}</div>`;
+  // Do not synthesize spill/mop images. Only actual image_url values are rendered.
+  SM.feed = (_kind, _label="", size="") => `<div class="feed-placeholder ${size}">Gambar belum tersedia dari backend.</div>`;
 })(window.SM);

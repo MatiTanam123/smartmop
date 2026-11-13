@@ -1,7 +1,13 @@
 .env
+.env.*
+!.env.example
 __pycache__/
 *.py[cod]
 .venv/
 venv/
-uploads/*
-!uploads/.gitkeep
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+storage/**
+!storage/captures/.gitkeep
+ml/models/*.pt

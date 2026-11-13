@@ -1,7 +1,12 @@
-from app import create_app
+"""Local development runner. Production uses Gunicorn: app:app."""
+import os
 
-app = create_app()
+from app import app
 
 if __name__ == "__main__":
-    # Untuk development lokal saja. Saat deploy gunakan server WSGI seperti Gunicorn.
-    app.run(host="0.0.0.0", port=5000, debug=app.config["DEBUG"])
+    app.run(
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", "5000")),
+        debug=app.config["DEBUG"],
+        threaded=True,
+    )

@@ -151,6 +151,7 @@ CREATE TABLE IF NOT EXISTS device_telemetry (
     battery_voltage     NUMERIC(6,3) CHECK (battery_voltage IS NULL OR battery_voltage >= 0),
     battery_percent     NUMERIC(5,2) CHECK (battery_percent IS NULL OR battery_percent BETWEEN 0 AND 100),
     soap_level_percent  NUMERIC(5,2) CHECK (soap_level_percent IS NULL OR soap_level_percent BETWEEN 0 AND 100),
+    soap_available      BOOLEAN,
     wifi_rssi           SMALLINT,
     measured_at         TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

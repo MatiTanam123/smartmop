@@ -1,10 +1,11 @@
-# Model Machine Learning
+# YOLO model weights
 
-Folder ini disediakan untuk bobot model YOLO hasil training tim.
+Letakkan bobot model hasil training bernama `best.pt` pada folder ini:
 
-1. Letakkan file bobot bernama `best.pt` di folder ini, atau ubah `ML_MODEL_PATH` pada `.env`.
-2. Install paket tambahan dengan `pip install -r backend/requirements-ml.txt`.
-3. Restart backend.
-4. Periksa `GET /api/health`; nilai `ml_available` harus `true`.
+```text
+backend/ml/models/best.pt
+```
 
-File bobot model tidak disertakan karena model terlatih milik proyek belum tersedia di file sumber yang diberikan.
+File bobot tidak disertakan dalam ZIP perbaikan karena tidak tersedia dalam ZIP sumber. Tanpa bobot dan paket `ultralytics`, backend tetap dapat menjalankan health endpoint, tetapi `POST /api/camera/upload` mengembalikan HTTP 503 agar frame tidak disimpan dengan hasil AI palsu.
+
+Untuk deployment Railway, pastikan file model tersedia pada filesystem container (misalnya melalui private Git repository atau proses download dari object storage private). Jangan simpan secret/storage token di source code.

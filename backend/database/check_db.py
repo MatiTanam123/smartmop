@@ -1,25 +1,15 @@
+"""One-off database connection check. Run from any working directory."""
+from __future__ import annotations
 
-import os
-import psycopg
-from dotenv import load_dotenv
-
-# Membaca file .env di folder yang sama
-load_dotenv()
-
-# Mengambil URL database
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-if not DATABASE_URL:
-    print("ERROR: DATABASE_URL tidak ditemukan!")
-    exit()
+from database.connection import get_db_connection
 
 try:
-    connection = psycopg.connect(DATABASE_URL)
-
-    print("BERHASIL TERHUBUNG KE SUPABASE!")
-
-    connection.close()
-
-except Exception as e:
-    print("Gagal terhubung ke database:")
-    print(e)
+    with get_db_connection() as conn:
+        result = conn.execute("SELECT current_database() AS database_name, NOW() AS server_time").fetchone()
+    print("BERHASIL TERHUBUNG KE DATABASE SMARTMOP")
+    print(f"Database : {result['database_name']}")
+    print(f"Server   : {result['server_time']}")
+except Exception as exc:
+    print("GAGAL TERHUBUNG KE DATABASE:")
+    print(f"{type(exc).__name__}: {exc}")
+    raise SystemExit(1)

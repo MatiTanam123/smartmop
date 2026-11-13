@@ -1,82 +1,53 @@
-from flask import Blueprint, jsonify
+"""Read-only detection history endpoints."""
+from urllib.parse import urlparse
+
+from flask import Blueprint, request, url_for
+
 from database.connection import get_db_connection
-from routes.helpers import json_body, error_response, success_response
+from routes.helpers import success_response
 
 detection_bp = Blueprint("detections", __name__)
 
-@detection_bp.post("/camera/frame")
-def create_camera_frame():
-    data, error = json_body()
-    if error:
-        return error
-    code = data.get("device_code", "ESP32_CAM_01")
-    with get_db_connection() as conn, conn.cursor() as cur:
-        cur.execute("SELECT device_id FROM devices WHERE device_code = %s AND is_enabled = TRUE", (code,))
-        device = cur.fetchone()
-        if not device:
-            return error_response("Perangkat kamera tidak ditemukan", 404)
-
-        cur.execute("""
-            INSERT INTO camera_frames
-                (camera_device_id, image_path, has_spill, highest_spill_confidence,
-                 model_name, model_version, inference_ms, processed)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            RETURNING frame_id, captured_at
-        """, (
-            device["device_id"], data.get("image_path"),
-            data.get("has_spill", False), data.get("highest_spill_confidence"),
-            data.get("model_name"), data.get("model_version"),
-            data.get("inference_ms"), data.get("processed", True)
-        ))
-        frame = cur.fetchone()
-        return success_response(frame, "Frame kamera tersimpan", 201)
-
-@detection_bp.post("/detections")
-def create_detection():
-    data, error = json_body()
-    if error:
-        return error
-    if not data.get("class_name") or data.get("confidence") is None:
-        return error_response("class_name dan confidence wajib diisi")
-
-    with get_db_connection() as conn, conn.cursor() as cur:
-        camera_code = data.get("device_code", "ESP32_CAM_01")
-        cur.execute("SELECT device_id FROM devices WHERE device_code = %s", (camera_code,))
-        device = cur.fetchone()
-        if not device:
-            return error_response("Perangkat kamera tidak ditemukan", 404)
-
-        cur.execute("""
-            INSERT INTO detections
-                (camera_device_id, frame_id, class_name, confidence,
-                 bbox_x, bbox_y, bbox_width, bbox_height, image_path,
-                 model_name, model_version, inference_ms, decision_status)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            RETURNING detection_id, detected_at
-        """, (
-            device["device_id"], data.get("frame_id"), data["class_name"],
-            data["confidence"], data.get("bbox_x"), data.get("bbox_y"),
-            data.get("bbox_width"), data.get("bbox_height"),
-            data.get("image_path"), data.get("model_name"),
-            data.get("model_version"), data.get("inference_ms"),
-            data.get("decision_status", "accepted")
-        ))
-        detection = cur.fetchone()
-        cur.execute("""
-            INSERT INTO activity_logs (event_type, severity, message, detection_id)
-            VALUES ('detection', 'info', %s, %s)
-        """, (f"Deteksi {data['class_name']} diterima", detection["detection_id"]))
-        return success_response(detection, "Hasil deteksi tersimpan", 201)
 
 @detection_bp.get("/detections")
 def list_detections():
-    limit = min(max(int(__import__("flask").request.args.get("limit", 50)), 1), 200)
-    with get_db_connection() as conn, conn.cursor() as cur:
-        cur.execute("""
-            SELECT detection_id, camera_device_id, frame_id, detected_at,
-                   class_name, confidence, bbox_x, bbox_y, bbox_width,
-                   bbox_height, image_path, model_name, model_version,
-                   inference_ms, decision_status
-            FROM detections ORDER BY detected_at DESC LIMIT %s
-        """, (limit,))
-        return success_response(cur.fetchall())
+    limit = request.args.get("limit", default=50, type=int) or 50
+    limit = max(1, min(limit, 200))
+    with get_db_connection() as conn:
+        rows = conn.execute(
+            """SELECT d.detection_id, d.camera_device_id, d.frame_id,
+                      d.detected_at, d.class_name, d.confidence,
+                      d.bbox_x, d.bbox_y, d.bbox_width, d.bbox_height,
+                      d.image_path, d.model_name, d.model_version,
+                      d.inference_ms, d.decision_status,
+                      cf.image_path AS frame_image_path
+               FROM detections d
+               LEFT JOIN camera_frames cf ON cf.frame_id = d.frame_id
+               ORDER BY d.detected_at DESC, d.detection_id DESC
+               LIMIT %s""",
+            (limit,),
+        ).fetchall()
+
+    # Return usable URLs while retaining the DB path for diagnostics.
+    result = []
+    for source in rows:
+        row = dict(source)
+        image_path = row.get("frame_image_path") or row.get("image_path")
+        if image_path:
+            parsed = urlparse(str(image_path))
+            if parsed.scheme in {"http", "https"}:
+                row["image_url"] = str(image_path)
+            elif row.get("frame_id") is not None:
+                row["image_url"] = url_for(
+                    "camera.get_frame_image",
+                    frame_id=int(row["frame_id"]),
+                    _external=True,
+                )
+            else:
+                row["image_url"] = None
+        else:
+            row["image_url"] = None
+        row.pop("frame_image_path", None)
+        result.append(row)
+
+    return success_response(result)

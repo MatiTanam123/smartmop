@@ -21,7 +21,9 @@
     target.innerHTML = rows.length ? rows.slice(0,5).map(d=>{
       const spill=isSpill(d.class_name), conf=Math.round(Number(d.confidence||0)*100);
       return `<article class="det">
-        ${SM.feed(spill?"spill":"clean","","thumb")}
+        ${d.image_url
+          ? `<img class="det-thumb" src="${escapeAttr(d.image_url)}" alt="Foto frame deteksi" loading="lazy">`
+          : '<div class="feed-placeholder thumb">Foto tidak tersedia</div>'}
         <div><h3 class="${spill?"bad":"good"}">${escapeHtml(d.class_name||"Deteksi")}</h3>
         <span class="pct ${spill?"bad":"good"}">${conf}%</span><time>${SM.formatTime(d.detected_at)}</time></div>
         <span class="badge ${spill?"danger":"success"}">${escapeHtml(d.decision_status||"accepted")}</span>
@@ -35,7 +37,8 @@
       return `<li class="${type}"><i></i><time>${SM.formatTime(l.created_at)}</time><span>${escapeHtml(l.message||l.event_type||"Aktivitas")}</span></li>`;
     }).join("") : '<li class="info"><i></i><span>Belum ada aktivitas tercatat.</span></li>';
   }
-  function escapeHtml(s) { return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  function escapeHtml(s) { return String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  function escapeAttr(s) { return escapeHtml(s); }
 
   async function load() {
     try {

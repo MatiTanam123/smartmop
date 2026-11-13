@@ -1,5 +1,5 @@
 /* SMARTMOP - app.js
-   Kerangka halaman bersama: sidebar, topbar, jam, toast, tampilan kamera simulasi. */
+   Kerangka halaman bersama: sidebar, topbar, jam, toast, dan placeholder tanpa data simulasi. */
 window.SM = window.SM || {};
 (function (SM) {
     const P = {
@@ -60,18 +60,15 @@ window.SM = window.SM || {};
         document.dispatchEvent(new CustomEvent("sm:log"));
     };
 
-    /* Tampilan kamera simulasi: <div data-feed="spill|clean|mop" data-label="..." data-size="sm|thumb" data-stamp> */
-    SM.feed = (kind, label, size, stamp) => {
-        const inner = kind === "mop" ? '<span class="pad"></span><span class="pad"></span>'
-            : kind === "spill" ? `<span class="spill"></span><span class="bbox">${label ? `<em>${label}</em>` : ""}</span>` : "";
-        return `<div class="feed ${kind === "mop" ? "mop" : ""} ${size || ""}">${inner}${stamp ? '<time class="feed-time" data-stamp></time>' : ""}</div>`;
-    };
+    /* Placeholder netral. Gambar hanya boleh berasal dari frame backend. */
+    SM.feed = (_kind, _label, size = "") =>
+        `<div class="feed-placeholder ${size || ""}">Gambar belum tersedia dari backend.</div>`;
     SM.hydrateFeeds = (root = document) => root.querySelectorAll("[data-feed]").forEach((el) => {
-        const holder = document.createElement("div");
-        holder.innerHTML = SM.feed(el.dataset.feed, el.dataset.label, el.dataset.size, "stamp" in el.dataset);
-        const feed = holder.firstElementChild;
-        el.replaceWith(feed);
-        if (el.id) feed.id = el.id;
+        const placeholder = document.createElement("div");
+        placeholder.className = `feed-placeholder ${el.dataset.size || ""}`;
+        placeholder.textContent = "Gambar belum tersedia dari backend.";
+        if (el.id) placeholder.id = el.id;
+        el.replaceWith(placeholder);
     });
 
     SM.setOnline = (on) => {

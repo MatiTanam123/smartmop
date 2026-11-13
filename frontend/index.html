@@ -1,12 +1,15 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMARTMOP</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+
     <link rel="stylesheet" href="assets/css/variables.css">
     <link rel="stylesheet" href="assets/css/layout.css">
     <link rel="stylesheet" href="assets/css/components.css">
@@ -14,166 +17,247 @@
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body data-page="beranda" data-root=""
-    data-title="Selamat Datang!"
-    data-sub="Robot pel pintar dengan deteksi tumpahan menggunakan AI">
+
+<body data-page="beranda"
+      data-root=""
+      data-title="Selamat Datang!"
+      data-sub="Robot pel pintar dengan deteksi tumpahan menggunakan AI">
 
 <div class="app">
+
     <aside class="sidebar" id="sidebar"></aside>
+
     <div class="main">
+
         <header class="topbar" id="topbar"></header>
 
         <main class="page">
-            <!-- Ringkasan Status robot-->
-            <section class="stats" aria-label="Ringkasan Satatus Robot">
-            <article class="card stat">
-                <span class="stat-icon tone-green"></span>
-                <div class="stat-body">
-                    <span>Status Robot</span>
-                    <strong class="checking" id="statStatus">Mengecek...</strong>
-                    <small id="statStatusSub">Menghubungkan ke server</small>
 
-                </div>
-            </article>
+            <!-- RINGKASAN STATUS ROBOT -->
+            <section class="stats" aria-label="Ringkasan Status Robot">
 
-            <article class="card stat">
-                <span class="stat-icon tone-grey"></span>
+                <article class="card stat">
+                    <span class="stat-icon tone-green"></span>
+                    <div class="stat-body">
+                        <span>Status Robot</span>
+                        <strong class="checking" id="statStatus">Memuat...</strong>
+                        <small id="statStatusSub">Menunggu data backend</small>
+                    </div>
+                </article>
+
+                <article class="card stat">
+                    <span class="stat-icon tone-grey"></span>
                     <div class="stat-body">
                         <span>Mode</span>
-                        <strong id="statMode">Otomatis</strong>
-                        <small id="statModeSub">Menunggu Deteksi Tumpahan</small>
+                        <strong id="statMode">--</strong>
+                        <small id="statModeSub">Menunggu data backend</small>
                     </div>
-            </article>
+                </article>
 
-            <article class="card stat">
-                <span class="stat-icon tone-blue"></span>
-                <div class="stat-body">
-                    <span>Level Sabun</span>
-                    <strong id="soapValue">--</strong>
-                <div class="progress" role="progressbar" aria-label="Level sabun"><i id="soapBar" style="width:68%"></i></div>
-                </div>
-            </article>
-            <article class="card stat">
-                <span class="stat-icon tone-blue"></span>
-                <div class="stat-body">
-                    <span>Level Baterai</span>
-                    <strong id="batteryValue">--</strong>
-                <div class="progress" role="progressbar" aria-label="Level baterai"><i id="batteryBar" style="width:68%"></i></div>
-                </div>
-            </article>
+                <article class="card stat">
+                    <span class="stat-icon tone-blue"></span>
+                    <div class="stat-body">
+                        <span>Level Sabun</span>
+                        <strong id="soapValue">--</strong>
+                        <div class="progress" role="progressbar"
+                             aria-label="Level sabun">
+                            <i id="soapBar"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="card stat">
+                    <span class="stat-icon tone-blue"></span>
+                    <div class="stat-body">
+                        <span>Level Baterai</span>
+                        <strong id="batteryValue">--</strong>
+                        <div class="progress" role="progressbar"
+                             aria-label="Level baterai">
+                            <i id="batteryBar"></i>
+                        </div>
+                    </div>
+                </article>
 
             </section>
 
+            <div class="dash">
 
+                <!-- LIVE CAMERA -->
+                <section class="card" aria-labelledby="hcam">
 
+                    <div class="card-head">
+                        <h2 id="hcam">Live Camera &amp; Deteksi AI</h2>
+                        <a class="link-all" href="pages/live-camera.html">
+                            Buka Layar Penuh
+                        </a>
+                    </div>
 
+                    <!-- Frame kamera aktual dari backend -->
+                    <div class="feed dashboard-camera-feed" id="mainFeed">
+                        <div id="cameraPlaceholder">
+                            Menunggu frame dari ESP32-CAM...
+                        </div>
+                    </div>
 
+                    <!-- Thumbnail hanya ditampilkan jika ada data aktual -->
+                    <div class="thumbs" id="cameraThumbnails"></div>
 
-<div class="dash">
-<!-- Live Camera-->
-<section class="card" aria-labelledby="hcam">
-    <div class="card-head">
-        <h2 id="hcam"> Live Camera &amp; Deteksi AI</h2>
-        <a class="link-all" href="pages/live-camera.html"> Buka Layar Penuh</a>
+                </section>
+
+                <!-- KONTROL ROBOT -->
+                <section class="card control"
+                         id="kontrol"
+                         aria-labelledby="htcl">
+
+                    <div class="card-head" style="margin:0">
+                        <h2 id="htcl">Kontrol Robot</h2>
+                    </div>
+
+                    <!-- MODE OTOMATIS / MANUAL -->
+                    <div class="seg"
+                         role="group"
+                         aria-label="Mode robot"
+                         id="modeSeg">
+
+                        <button type="button"
+                                data-mode="Otomatis"
+                                aria-pressed="false"
+                                id="modeAuto">
+                        </button>
+
+                        <button type="button"
+                                data-mode="Manual"
+                                aria-pressed="false"
+                                id="modeManual">
+                        </button>
+
+                    </div>
+
+                    <!-- ARAH GERAK ROBOT -->
+                    <div class="dpad"
+                         id="dpad"
+                         data-disable="true"
+                         role="group"
+                         aria-label="Arah gerak robot">
+
+                        <button class="up"
+                                data-dir="maju"
+                                aria-label="Maju"></button>
+
+                        <button class="down"
+                                data-dir="mundur"
+                                aria-label="Mundur"></button>
+
+                        <button class="stop"
+                                data-dir="berhenti"
+                                aria-label="Berhenti"></button>
+
+                        <button class="right"
+                                data-dir="kanan"
+                                aria-label="Belok Kanan"></button>
+
+                        <button class="left"
+                                data-dir="kiri"
+                                aria-label="Belok Kiri"></button>
+
+                    </div>
+
+                    <!-- TOMBOL MULAI DAN BERHENTI -->
+                    <div class="act-row">
+
+                        <button class="btn btn-success"
+                                id="btnStart">
+                        </button>
+
+                        <button class="btn btn-danger"
+                                id="btnStop">
+                        </button>
+
+                    </div>
+
+                    <!-- POMPA SABUN DAN MOTOR PEL -->
+                    <div class="tool-row">
+
+                        <div class="tool-tile">
+                            <span id="icoPump"></span>
+
+                            <label class="switch">
+                                <input type="checkbox"
+                                       id="swPump"
+                                       aria-label="Pompa sabun">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="tool-tile">
+                            <span id="icoMotor"></span>
+
+                            <label class="switch">
+                                <input type="checkbox"
+                                       id="swMotor"
+                                       aria-label="Motor Pel">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- DETEKSI DAN LOG AKTIVITAS -->
+                <div class="stack">
+
+                    <section class="card" aria-labelledby="hDet">
+
+                        <div class="card-head">
+                            <h2 id="hDet">Deteksi Terkini</h2>
+                            <a class="link-all" href="pages/riwayat.html">
+                                Lihat Semua
+                            </a>
+                        </div>
+
+                        <div class="det-list" id="detList">
+                            <p>Belum ada data deteksi dari backend.</p>
+                        </div>
+
+                    </section>
+
+                    <section class="card" aria-labelledby="hLog">
+
+                        <div class="card-head">
+                            <h2 id="hLog">Log Aktivitas</h2>
+                            <a class="link-all" href="pages/riwayat.html">
+                                Lihat Semua
+                            </a>
+                        </div>
+
+                        <ul class="log" id="logList">
+                            <li>Belum ada aktivitas tercatat.</li>
+                        </ul>
+
+                    </section>
+
+                </div>
+
+            </div>
+
+        </main>
+
     </div>
-    <div data-feed="spill" data-label="Tumpahan Sirup (..)" data-stam></div>
-    <div class="thumbs">
-        <figure><div data-feed="spill" data-size="sm"></div><figcaption>Sebelum Deteksi</figcaption></figure>
-        <figure><div data-feed="mop"></div><figcaption>Proses Mengepel</figcaption></figure>
-        <figure><div data-feed="clean"></div><figcaption>Setelah Mengepel</figcaption></figure>
-    </div>
-
-
-</section>
-
-
-
-
-    <!-- Bagian kontrol robot-->
-
-<!-- bagian ini dia manual ke otomatis-->
-<section class="card control" id="kontrol" aria-labelledby="htcl">
-    <div class="card-head" style="margin:0"><h2 id="htcl">Kontrol Robot</h2></div>
-    <div class="seg" role="group" aria-label="Mode robot" id="modeSeg">
-        <button type="button" data-mode="Otomatis" aria-pressed="true" id="modeAuto">
-        </button>
-        <button type="button" data-mode="Manual" aria-pressed="false" id="modeManual">
-        </button>
-    </div>
-
-
-<!-- bagian dia gerak ke depan belakang kiri kanan-->
-<div class="dpad" id="dpad" data-disable="true" role="group" aria-label="Arah gerak robot">
-    <button class="up" data-dir="maju" aria-label="Maju"></button>
-    <button class="down" data-dir="mundur" aria-label="Mundurs"></button>
-    <button class="stop" data-dir="berhenti" aria-label="Berhenti"></button>
-    <button class="right" data-dir="kanan" aria-label="Belok Kanan"></button>
-    <button class="left" data-dir="kiri" aria-label="Belok Kiri"></button>
-</div>
-
-
-<div class="act-row">
-    <button class="btn btn-success" id="btnStart"></button>
-    <button class="btn btn-danger" id="btnStop"></button>
-
-
-
-<!-- Bagian nyalakan sabun same pengepel-->
-
-<div class="tool-row">
-    <div class="tool-tile"><span id=icoPump></span>
-    <label class="switch">
-        <input type="checkbox" id="swPump" aria-label="Pompa sabun" checked><span class="switch-slider"></span>
-    </label>
-    </div>
-    <div class="tool-tile"><span id=icoMotor></span>
-    <label class="switch">
-        <input type="checkbox" id="swMotor" aria-label="Motor Pel" checked><span class="switch-slider"></span>
-    </label>
-    </div>
-
-
-
-        </div>
-</div>
-
-</section>
-
-<!-- Deteksi terkini Log-->
-<div class="stack">
-    <section class="card" aria-labelledby="hDet">
-        <div class="card-head"><h2 id="hDet">Deteksi Terkini</h2><a class="link-all" href="pages/riwayat.html">Lihat Semua</a></div>
-        <div class="det-llist" id="detList"></div>
-    </section>
-    <section class="card" aria-labelledby="hLog">
-        <div class="card-head"><h2 id="hlog">Log Aktivitas</h2><a class="link-all" href="pages/riwayat.html">Lihat Semua</a></div>
-        <ul class="log" id="logList"></ul>
-    </section>
-
-
-
 
 </div>
-</div>
-</main>
-</div>
-</div>
-<p class="jam"><span id="clockDate"></span> · <strong id="clockTime"></strong></p>
+
+<p class="jam">
+    <span id="clockDate"></span> ·
+    <strong id="clockTime"></strong>
+</p>
+
 <script src="assets/js/api.js"></script>
 <script src="assets/js/app.js"></script>
 <script src="assets/js/notifications.js"></script>
+<script src="assets/js/camera.js"></script>
 <script src="assets/js/robot-control.js"></script>
 <script src="assets/js/dashboard.js"></script>
 
-
-
-
-
-
-
-
 </body>
 </html>
-
-
-
